@@ -104,16 +104,66 @@
       height: 160px;
       object-fit: cover;
     }
+    /* Hamburger Menu Styles */
+    .hamburger {
+      display: none;
+      cursor: pointer;
+    }
+    .hamburger div {
+      width: 25px;
+      height: 3px;
+      background: #00ffcc;
+      margin: 5px;
+      transition: all 0.3s ease;
+    }
+    .nav-menu {
+      display: flex;
+    }
+    .nav-menu.active {
+      display: flex;
+    }
     @media (max-width: 640px) {
       .project-img {
         height: 140px;
       }
-      nav ul {
+      .hamburger {
+        display: block;
+      }
+      .nav-menu {
+        display: none;
         flex-direction: column;
-        space-y-2;
+        width: 100%;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #1a1a2e;
+        padding: 1rem;
+        z-index: 49;
+      }
+      .nav-menu.active {
+        display: flex;
       }
       nav ul li {
         margin-bottom: 8px;
+        text-align: center;
+      }
+      .section-title {
+        font-size: 1.75rem;
+      }
+      h2 {
+        font-size: 1.5rem;
+      }
+      p {
+        font-size: 0.9rem;
+      }
+      .text-4xl {
+        font-size: 2rem;
+      }
+      .text-xl {
+        font-size: 1rem;
+      }
+      .text-lg {
+        font-size: 0.875rem;
       }
     }
   </style>
@@ -124,14 +174,19 @@
 
   <!-- Navbar -->
   <nav class="bg-gray-900/90 backdrop-blur-md p-4 sticky top-0 shadow-lg z-50">
-    <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center">
+    <div class="container mx-auto flex justify-between items-center">
       <div class="flex items-center space-x-4">
         <a href="profile.jpg" target="_blank">
           <img src="profile.jpg" alt="Mazen Emad" class="w-12 h-12 rounded-full profile-img">
         </a>
         <h1 class="text-2xl font-bold text-indigo-400 glow">Mazen Emad</h1>
       </div>
-      <ul class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 mt-4 sm:mt-0">
+      <div class="hamburger">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <ul class="nav-menu flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 sm:mt-0">
         <li><a href="#home" class="glow hover:text-indigo-400 transition">Home</a></li>
         <li><a href="#about" class="glow hover:text-indigo-400 transition">About</a></li>
         <li><a href="#projects" class="glow hover:text-indigo-400 transition">Projects</a></li>
@@ -285,6 +340,14 @@
   <script>
     // Initialize AOS
     AOS.init({ duration: 1500, easing: 'ease-out-cubic' });
+
+    // Hamburger Menu Toggle
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+    hamburger.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+      hamburger.classList.toggle('active');
+    });
 
     // GSAP Counter Animation for Stats
     document.querySelectorAll('.count-up').forEach(counter => {
