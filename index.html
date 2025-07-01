@@ -65,7 +65,20 @@
       z-index: 5;
     }
     .glow {
-      text-shadow: 0 0 12px rgba(79, 70, 229, 0.6);
+      color: #00ffcc;
+      text-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
+    }
+    .glow:hover {
+      color: #4f46e5;
+      text-shadow: 0 0 12px rgba(79, 70, 229, 0.8);
+    }
+    .email-glow {
+      color: #00ffcc;
+      text-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
+    }
+    .email-glow:hover {
+      color: #4f46e5;
+      text-shadow: 0 0 12px rgba(79, 70, 229, 0.8);
     }
     .neon-text {
       background: linear-gradient(45deg, #4b0082, #00ffcc);
@@ -86,6 +99,23 @@
     footer {
       z-index: 1;
     }
+    .project-img {
+      max-width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+    @media (max-width: 640px) {
+      .project-img {
+        height: 140px;
+      }
+      nav ul {
+        flex-direction: column;
+        space-y-2;
+      }
+      nav ul li {
+        margin-bottom: 8px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -94,20 +124,20 @@
 
   <!-- Navbar -->
   <nav class="bg-gray-900/90 backdrop-blur-md p-4 sticky top-0 shadow-lg z-50">
-    <div class="container mx-auto flex justify-between items-center">
+    <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center">
       <div class="flex items-center space-x-4">
         <a href="profile.jpg" target="_blank">
           <img src="profile.jpg" alt="Mazen Emad" class="w-12 h-12 rounded-full profile-img">
         </a>
         <h1 class="text-2xl font-bold text-indigo-400 glow">Mazen Emad</h1>
       </div>
-      <ul class="flex space-x-6">
-        <li><a href="#home" class="hover:text-indigo-400 transition glow">Home</a></li>
-        <li><a href="#about" class="hover:text-indigo-400 transition glow">About</a></li>
-        <li><a href="#projects" class="hover:text-indigo-400 transition glow">Projects</a></li>
-        <li><a href="#courses" class="hover:text-indigo-400 transition glow">Courses</a></li>
-        <li><a href="#skills" class="hover:text-indigo-400 transition glow">Skills</a></li>
-        <li><a href="#contact" class="hover:text-indigo-400 transition glow">Contact</a></li>
+      <ul class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 mt-4 sm:mt-0">
+        <li><a href="#home" class="glow hover:text-indigo-400 transition">Home</a></li>
+        <li><a href="#about" class="glow hover:text-indigo-400 transition">About</a></li>
+        <li><a href="#projects" class="glow hover:text-indigo-400 transition">Projects</a></li>
+        <li><a href="#courses" class="glow hover:text-indigo-400 transition">Courses</a></li>
+        <li><a href="#skills" class="glow hover:text-indigo-400 transition">Skills</a></li>
+        <li><a href="#contact" class="glow hover:text-indigo-400 transition">Contact</a></li>
       </ul>
     </div>
   </nav>
@@ -122,7 +152,7 @@
   </section>
 
   <!-- About Section -->
-  <section id="about" class="py-16 container mx-auto px-4 parallax">
+  <section id="about" class="py-16 container mx-auto px-4 sm:px-6 lg:px-8 parallax">
     <h2 class="text-3xl font-bold text-center mb-8 section-title" data-aos="fade-up">About Me</h2>
     <div class="about-card rounded-lg p-8 max-w-3xl mx-auto text-center text-gray-300" data-aos="zoom-in" data-aos-delay="100">
       <p class="text-lg leading-relaxed">
@@ -133,7 +163,7 @@
 
   <!-- Stats Section -->
   <section class="py-16 bg-gray-800/50 parallax">
-    <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
       <div data-aos="fade-up" data-aos-delay="200">
         <h3 class="text-4xl font-bold text-indigo-400 count-up" data-target="20">0</h3>
         <p class="text-lg text-gray-300 stats-text">+20 Machine Learning Projects</p>
@@ -150,13 +180,13 @@
   </section>
 
   <!-- Projects Section -->
-  <section id="projects" class="py-20 pb-32 container mx-auto px-4 parallax" style="z-index: 10;">
+  <section id="projects" class="py-20 pb-32 container mx-auto px-4 sm:px-6 lg:px-8 parallax" style="z-index: 10;">
     <h2 class="text-3xl font-bold text-center mb-8 section-title" data-aos="fade-up">My Projects</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10">
       <!-- Project 1 -->
       <div class="card rounded-lg shadow-lg p-6" data-aos="slide-up" data-aos-delay="100">
         <a href="project1.jpg" target="_blank">
-          <img src="project1.jpg" alt="House Rent Prediction" class="w-full h-48 object-cover rounded mb-4">
+          <img src="project1.jpg" alt="House Rent Prediction" class="project-img rounded mb-4">
         </a>
         <h3 class="text-xl font-semibold mb-2">House Rent Prediction</h3>
         <p class="text-gray-400 mb-4">A regression model to predict house rent prices in various cities using machine learning techniques.</p>
@@ -165,7 +195,7 @@
       <!-- Project 2 -->
       <div class="card rounded-lg shadow-lg p-6" data-aos="slide-up" data-aos-delay="200">
         <a href="project2.jpg" target="_blank">
-          <img src="project2.jpg" alt="Student Performance" class="w-full h-48 object-cover rounded mb-4">
+          <img src="project2.jpg" alt="Student Performance" class="project-img rounded mb-4">
         </a>
         <h3 class="text-xl font-semibold mb-2">Student Performance</h3>
         <p class="text-gray-400 mb-4">A regression model to predict student exam scores based on lifestyle factors.</p>
@@ -174,7 +204,7 @@
       <!-- Project 3 -->
       <div class="card rounded-lg shadow-lg p-6" data-aos="slide-up" data-aos-delay="300">
         <a href="project3.jpg" target="_blank">
-          <img src="project3.jpg" alt="Credit Score Classification" class="w-full h-48 object-cover rounded mb-4">
+          <img src="project3.jpg" alt="Credit Score Classification" class="project-img rounded mb-4">
         </a>
         <h3 class="text-xl font-semibold mb-2">Credit Score Classification</h3>
         <p class="text-gray-400 mb-4">A classification model to predict and classify credit scores using machine learning algorithms.</p>
@@ -183,7 +213,7 @@
       <!-- Project 4 -->
       <div class="card rounded-lg shadow-lg p-6" data-aos="slide-up" data-aos-delay="400">
         <a href="project4.jpg" target="_blank">
-          <img src="project4.jpg" alt="Weather Classification" class="w-full h-48 object-cover rounded mb-4">
+          <img src="project4.jpg" alt="Weather Classification" class="project-img rounded mb-4">
         </a>
         <h3 class="text-xl font-semibold mb-2">Weather Classification</h3>
         <p class="text-gray-400 mb-4">A classification model to predict whether it will rain tomorrow based on weather data.</p>
@@ -195,7 +225,7 @@
   <!-- Courses Section -->
   <section id="courses" class="py-16 mt-16 bg-gray-900/50 parallax" style="z-index: 5;">
     <h2 class="text-3xl font-bold text-center mb-8 section-title" data-aos="fade-up">Courses</h2>
-    <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10">
       <!-- Course 1 -->
       <div class="card rounded-lg p-6 text-center" data-aos="zoom-in" data-aos-delay="100">
         <h3 class="text-xl font-semibold mb-2">Machine Learning for Data Analysis – NTI</h3>
@@ -203,26 +233,24 @@
         <a href="#" class="text-indigo-400 hover:underline">View Certificate</a>
       </div>
       <!-- Course 2 -->
-      <!-- Course 2 -->
       <div class="card rounded-lg p-6 text-center" data-aos="zoom-in" data-aos-delay="200">
         <h3 class="text-xl font-semibold mb-2">Artificial Intelligence Fundamentals – ITI</h3>
-        <p class="text-gray-400 mb-4">
-        Covered essential AI topics, including Linear Algebra and core mathematics for AI, data preprocessing, data visualization, Neural Networks, and Deep Learning fundamentals with practical applications.
-        </p>
-       <a href="ITI.jpg" target="_blank" class="text-indigo-400 hover:underline">View Certificate</a>
-    </div>
-
+        <p class="text-gray-400 mb-4">Completed a course focused on AI mathematics, data preprocessing, data cleaning, neural networks, and deep learning.</p>
+        <a href="ITI.jpg" target="_blank" class="text-indigo-400 hover:underline">View Certificate</a>
+      </div>
     </div>
   </section>
 
   <!-- Skills Section -->
-  <section id="skills" class="py-16 bg-gray-900 parallax">
+ <section id="skills" class="py-16 bg-gray-900 parallax">
     <h2 class="text-3xl font-bold text-center mb-8 section-title" data-aos="fade-up">Skills</h2>
-    <div class="container mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
       <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="100">Python</div>
-      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="200">Problem Solving</div>
       <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="300">SQL</div>
       <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="400">Data Structure</div>
+      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="400">Algorithms</div>
+      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="400">Problem Solving</div>
+      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="400">Critical Thinking</div>
       <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="500">Data Cleaning</div>
       <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="600">Data Visualization</div>
       <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="700">Feature Engineering</div>
@@ -231,19 +259,16 @@
       <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="200">Unsupervised Learning</div>
       <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="300">Model Evaluation</div>
       <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="400">Hyperparameter Tuning</div>
-      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="500">CNN</div>
-      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="600">Algorithms</div>
-      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="700">Critical Thinking</div>
       <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="400">Git & GitHub</div>
     </div>
   </section>
 
   <!-- Contact Section -->
-  <section id="contact" class="py-16 pb-32 container mx-auto px-4 parallax" style="z-index: 15;">
+  <section id="contact" class="py-16 pb-32 container mx-auto px-4 sm:px-6 lg:px-8 parallax" style="z-index: 15;">
     <h2 class="text-3xl font-bold text-center mb-8 section-title" data-aos="fade-up">Contact Me</h2>
     <div class="max-w-lg mx-auto text-center contact-links" data-aos="fade-up" data-aos-delay="100">
       <p class="text-lg mb-4 text-gray-300">Interested in collaborating on an AI or Data Science project? Reach out!</p>
-      <p class="mb-4">Email: your.email@example.com</p>
+      <p class="mb-4"><a href="mailto:Mazen7ektr@gmail.com" class="email-glow hover:text-indigo-400 transition">Email: Mazen7ektr@gmail.com</a></p>
       <div class="flex justify-center space-x-4">
         <a href="https://github.com/MazenEmad14" class="text-indigo-400 hover:underline">GitHub</a>
         <a href="https://www.linkedin.com/in/mazen-emad14" class="text-indigo-400 hover:underline">LinkedIn</a>
