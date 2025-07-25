@@ -28,6 +28,7 @@
       background: linear-gradient(45deg, #4b0082, #00ffcc);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      font-size: clamp(1.75rem, 5vw, 2.5rem);
     }
     .card {
       background: linear-gradient(135deg, rgba(30, 30, 47, 0.8), rgba(42, 42, 59, 0.8));
@@ -55,6 +56,8 @@
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       pointer-events: auto;
       z-index: 60;
+      width: clamp(40px, 10vw, 48px);
+      height: clamp(40px, 10vw, 48px);
     }
     .profile-img:hover {
       transform: scale(1.1);
@@ -85,9 +88,11 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-shadow: 0 0 12px rgba(79, 70, 229, 0.6);
+      font-size: clamp(1rem, 3vw, 1.5rem);
     }
     .stats-text {
       text-shadow: 0 0 10px rgba(79, 70, 229, 0.5);
+      font-size: clamp(0.9rem, 2.5vw, 1.125rem);
     }
     nav {
       z-index: 50;
@@ -101,13 +106,15 @@
     }
     .project-img {
       max-width: 100%;
-      height: 160px;
+      height: clamp(120px, 25vw, 160px);
       object-fit: cover;
+      border-radius: 8px;
     }
     /* Hamburger Menu Styles */
     .hamburger {
       display: none;
       cursor: pointer;
+      z-index: 51;
     }
     .hamburger div {
       width: 25px;
@@ -116,16 +123,41 @@
       margin: 5px;
       transition: all 0.3s ease;
     }
+    .hamburger.active div:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.active div:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active div:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
     .nav-menu {
       display: flex;
+      transition: all 0.3s ease;
     }
     .nav-menu.active {
       display: flex;
     }
-    @media (max-width: 640px) {
-      .project-img {
-        height: 140px;
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .section-title {
+        font-size: clamp(1.5rem, 4vw, 2rem);
       }
+      .text-4xl {
+        font-size: clamp(1.75rem, 5vw, 2.5rem);
+      }
+      .text-xl {
+        font-size: clamp(0.9rem, 2.5vw, 1.125rem);
+      }
+      .text-lg {
+        font-size: clamp(0.8rem, 2vw, 1rem);
+      }
+      .project-img {
+        height: clamp(100px, 20vw, 140px);
+      }
+    }
+    @media (max-width: 640px) {
       .hamburger {
         display: block;
       }
@@ -139,31 +171,53 @@
         background: #1a1a2e;
         padding: 1rem;
         z-index: 49;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
       }
       .nav-menu.active {
         display: flex;
       }
       nav ul li {
-        margin-bottom: 8px;
+        margin-bottom: 12px;
         text-align: center;
       }
       .section-title {
-        font-size: 1.75rem;
+        font-size: clamp(1.25rem, 4vw, 1.75rem);
       }
       h2 {
-        font-size: 1.5rem;
+        font-size: clamp(1.25rem, 4vw, 1.5rem);
       }
       p {
-        font-size: 0.9rem;
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
       }
       .text-4xl {
-        font-size: 2rem;
+        font-size: clamp(1.5rem, 5vw, 2rem);
       }
       .text-xl {
-        font-size: 1rem;
+        font-size: clamp(0.8rem, 2.5vw, 1rem);
       }
       .text-lg {
-        font-size: 0.875rem;
+        font-size: clamp(0.75rem, 2vw, 0.875rem);
+      }
+      .project-img {
+        height: clamp(80px, 20vw, 120px);
+      }
+      .card:hover {
+        transform: translateY(-8px) scale(1.05);
+      }
+    }
+    @media (max-width: 480px) {
+      .profile-img {
+        width: clamp(36px, 8vw, 40px);
+        height: clamp(36px, 8vw, 40px);
+      }
+      .grid-cols-2 {
+        grid-template-columns: 1fr;
+      }
+      .grid-cols-3 {
+        grid-template-columns: 1fr;
+      }
+      .grid-cols-4 {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -177,7 +231,7 @@
     <div class="container mx-auto flex justify-between items-center">
       <div class="flex items-center space-x-4">
         <a href="profile.jpg" target="_blank">
-          <img src="profile.jpg" alt="Mazen Emad" class="w-12 h-12 rounded-full profile-img">
+          <img src="profile.jpg" alt="Mazen Emad" class="rounded-full profile-img">
         </a>
         <h1 class="text-2xl font-bold text-indigo-400 glow">Mazen Emad</h1>
       </div>
@@ -263,7 +317,7 @@
         </a>
         <h3 class="text-xl font-semibold mb-2">Credit Score Classification</h3>
         <p class="text-gray-400 mb-4">A classification model to predict and classify credit scores using machine learning algorithms.</p>
-        <a href="https://github.com/MazenEmad14/Credit-score-classification" class="text-indigo-400 hover:underline">View Project</a>
+        <a href="https://github.com/MazenEmad14/Credit-score-classificationCredit-score-classification" class="text-indigo-400 hover:underline">View Project</a>
       </div>
       <!-- Project 4 -->
       <div class="card rounded-lg shadow-lg p-6" data-aos="slide-up" data-aos-delay="400">
@@ -297,7 +351,7 @@
   </section>
 
   <!-- Skills Section -->
- <section id="skills" class="py-16 bg-gray-900 parallax">
+  <section id="skills" class="py-16 bg-gray-900 parallax">
     <h2 class="text-3xl font-bold text-center mb-8 section-title" data-aos="fade-up">Skills</h2>
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
       <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="100">Python</div>
@@ -339,14 +393,24 @@
 
   <script>
     // Initialize AOS
-    AOS.init({ duration: 1500, easing: 'ease-out-cubic' });
+    AOS.init({ duration: 1500, easing: 'ease-out-cubic', once: true });
 
     // Hamburger Menu Toggle
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
     hamburger.addEventListener('click', () => {
-      navMenu.classList.toggle('active');
       hamburger.classList.toggle('active');
+      navMenu.classList.toggle('active');
+    });
+
+    // Close menu when clicking a nav link on mobile
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 640) {
+          hamburger.classList.remove('active');
+          navMenu.classList.remove('active');
+        }
+      });
     });
 
     // GSAP Counter Animation for Stats
@@ -388,11 +452,14 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.getElementById('hero-bg').appendChild(renderer.domElement);
 
+    // Optimize particle count for mobile
+    const isMobile = window.innerWidth <= 640;
+    const particleCount = isMobile ? 3000 : 6000;
     const geometry = new THREE.BufferGeometry();
     const vertices = [];
     const colors = [];
     const connections = new THREE.Group();
-    for (let i = 0; i < 6000; i++) {
+    for (let i = 0; i < particleCount; i++) {
       vertices.push(
         Math.random() * 700 - 350,
         Math.random() * 700 - 350,
@@ -403,12 +470,13 @@
     }
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
     geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-    const material = new THREE.PointsMaterial({ size: 1.0, vertexColors: true });
+    const material = new THREE.PointsMaterial({ size: isMobile ? 0.8 : 1.0, vertexColors: true });
     const points = new THREE.Points(geometry, material);
     scene.add(points);
 
     // Add connections between particles
-    for (let i = 0; i < 250; i++) {
+    const connectionCount = isMobile ? 125 : 250;
+    for (let i = 0; i < connectionCount; i++) {
       const lineGeometry = new THREE.BufferGeometry().setFromPoints([
         new THREE.Vector3(vertices[i * 3], vertices[i * 3 + 1], vertices[i * 3 + 2]),
         new THREE.Vector3(vertices[(i + 1) * 3], vertices[(i + 1) * 3 + 1], vertices[(i + 1) * 3 + 2])
@@ -429,12 +497,24 @@
     };
     animate();
 
+    // Mouse and Touch Interaction
+    const handleInteraction = (x, y) => {
+      const normalizedX = (x / window.innerWidth) * 2 - 1;
+      const normalizedY = -(y / window.innerHeight) * 2 + 1;
+      gsap.to(points.rotation, { x: normalizedY * 0.3, y: normalizedX * 0.3, duration: 1.5 });
+      gsap.to(connections.rotation, { x: normalizedY * 0.3, y: normalizedX * 0.3, duration: 1.5 });
+    };
+
     // Mouse Interaction
     document.addEventListener('mousemove', (event) => {
-      const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-      const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-      gsap.to(points.rotation, { x: mouseY * 0.3, y: mouseX * 0.3, duration: 1.5 });
-      gsap.to(connections.rotation, { x: mouseY * 0.3, y: mouseX * 0.3, duration: 1.5 });
+      handleInteraction(event.clientX, event.clientY);
+    });
+
+    // Touch Interaction
+    document.addEventListener('touchmove', (event) => {
+      if (event.touches.length > 0) {
+        handleInteraction(event.touches[0].clientX, event.touches[0].clientY);
+      }
     });
 
     // Resize Handler
