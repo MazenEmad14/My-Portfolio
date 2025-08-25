@@ -11,6 +11,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <style>
+    html {
+      scroll-behavior: smooth;
+    }
     body {
       font-family: 'Roboto', sans-serif;
       overflow-x: hidden;
@@ -75,6 +78,11 @@
       color: #4f46e5;
       text-shadow: 0 0 12px rgba(79, 70, 229, 0.8);
     }
+    .nav-menu a.active {
+      color: #4f46e5;
+      text-shadow: 0 0 12px rgba(79, 70, 229, 0.8);
+      font-weight: bold;
+    }
     .email-glow {
       color: #00ffcc;
       text-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
@@ -94,6 +102,22 @@
       text-shadow: 0 0 10px rgba(79, 70, 229, 0.5);
       font-size: clamp(0.9rem, 2.5vw, 1.125rem);
     }
+    .view-project-btn {
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      background: #4f46e5;
+      color: white;
+      border-radius: 0.5rem;
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      text-align: center;
+      transition: background 0.3s, transform 0.3s;
+      margin-top: 1rem;
+    }
+    .view-project-btn:hover {
+      background: #6366f1;
+      transform: scale(1.05);
+      text-decoration: none;
+    }
     nav {
       z-index: 50;
     }
@@ -106,7 +130,7 @@
     }
     .project-img {
       max-width: 100%;
-      height: clamp(120px, 25vw, 160px);
+      height: clamp(160px, 35vw, 200px);
       object-fit: cover;
       border-radius: 8px;
     }
@@ -144,8 +168,8 @@
       .section-title {
         font-size: clamp(1.5rem, 4vw, 2rem);
       }
-      .text-4xl {
-        font-size: clamp(1.75rem, 5vw, 2.5rem);
+      .text-5xl {
+        font-size: clamp(2rem, 5vw, 3rem);
       }
       .text-xl {
         font-size: clamp(0.9rem, 2.5vw, 1.125rem);
@@ -153,8 +177,15 @@
       .text-lg {
         font-size: clamp(0.8rem, 2vw, 1rem);
       }
+      .text-base {
+        font-size: clamp(0.85rem, 2.2vw, 1rem);
+      }
       .project-img {
-        height: clamp(100px, 20vw, 140px);
+        height: clamp(140px, 30vw, 180px);
+      }
+      .view-project-btn {
+        padding: 0.6rem 1.5rem;
+        font-size: clamp(0.8rem, 1.8vw, 0.9rem);
       }
     }
     @media (max-width: 640px) {
@@ -189,8 +220,8 @@
       p {
         font-size: clamp(0.8rem, 2vw, 0.9rem);
       }
-      .text-4xl {
-        font-size: clamp(1.5rem, 5vw, 2rem);
+      .text-5xl {
+        font-size: clamp(1.75rem, 5vw, 2.5rem);
       }
       .text-xl {
         font-size: clamp(0.8rem, 2.5vw, 1rem);
@@ -198,11 +229,18 @@
       .text-lg {
         font-size: clamp(0.75rem, 2vw, 0.875rem);
       }
+      .text-base {
+        font-size: clamp(0.75rem, 2vw, 0.875rem);
+      }
       .project-img {
-        height: clamp(80px, 20vw, 120px);
+        height: clamp(120px, 25vw, 160px);
       }
       .card:hover {
         transform: translateY(-8px) scale(1.05);
+      }
+      .view-project-btn {
+        padding: 0.5rem 1.2rem;
+        font-size: clamp(0.75rem, 1.8vw, 0.875rem);
       }
     }
     @media (max-width: 480px) {
@@ -243,16 +281,17 @@
       <ul class="nav-menu flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 sm:mt-0">
         <li><a href="#home" class="glow hover:text-indigo-400 transition">Home</a></li>
         <li><a href="#about" class="glow hover:text-indigo-400 transition">About</a></li>
-        <li><a href="#projects" class="glow hover:text-indigo-400 transition">Projects</a></li>
+        <li><a href="#education" class="glow hover:text-indigo-400 transition">Education</a></li>
         <li><a href="#courses" class="glow hover:text-indigo-400 transition">Courses</a></li>
         <li><a href="#skills" class="glow hover:text-indigo-400 transition">Skills</a></li>
+        <li><a href="#projects" class="glow hover:text-indigo-400 transition">Projects</a></li>
         <li><a href="#contact" class="glow hover:text-indigo-400 transition">Contact</a></li>
       </ul>
     </div>
   </nav>
 
   <!-- Hero Section -->
-  <section id="home" class="min-h-screen flex items-center justify-center text-center relative">
+  <section id="home" class="min-h-screen flex items-center justify-center text-center relative py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-900/50">
     <div data-aos="zoom-in-up" data-aos-duration="1600">
       <h2 class="text-4xl md:text-6xl font-bold mb-4 section-title">Mazen Emad Abdelhalim</h2>
       <p class="text-xl md:text-2xl mb-6 neon-text">Data Analysis, Data Science and AI Engineer</p>
@@ -261,78 +300,25 @@
   </section>
 
   <!-- About Section -->
-  <section id="about" class="py-16 container mx-auto px-4 sm:px-6 lg:px-8 parallax">
+  <section id="about" class="py-12 sm:py-16 md:py-20 lg:py-24 container mx-auto px-4 sm:px-6 lg:px-8 parallax bg-gray-900/50">
     <h2 class="text-3xl font-bold text-center mb-8 section-title" data-aos="fade-up">About Me</h2>
     <div class="about-card rounded-lg p-8 max-w-3xl mx-auto text-center text-gray-300" data-aos="zoom-in" data-aos-delay="100">
       <p class="text-lg leading-relaxed">
-        I'm a final-year student at the Faculty of Computers and Artificial Intelligence (BFCAI), specializing in Artificial Intelligence with a focus on Data Science and AI. My journey has involved multiple projects in data exploration, preprocessing, visualization, and predictive modeling, building a strong foundation in handling real-world data and extracting valuable insights. My passion for AI began with curiosity about intelligent systems like ChatGPT and self-driving cars, leading me to specialize in dashboards, data pipelines, and building generative AI models. I'm always excited to learn, build, and contribute to impactful AI solutions.
+        HI, My name is Mazen Emad. I'm a final-year student at the Faculty of Computers and Artificial Intelligence (BFCAI), specializing in Artificial Intelligence with a focus on Data Science and AI. My journey has involved multiple projects in data exploration, preprocessing, visualization, and predictive modeling, building a strong foundation in handling real-world data and extracting valuable insights. My passion for AI began with curiosity about intelligent systems like ChatGPT and self-driving cars, leading me to specialize in dashboards, data pipelines, and building generative AI models. I'm always excited to learn, build, and contribute to impactful AI solutions.
       </p>
     </div>
   </section>
-
-  <!-- Stats Section -->
-  <section class="py-16 bg-gray-800/50 parallax">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-      <div data-aos="fade-up" data-aos-delay="200">
-        <h3 class="text-4xl font-bold text-indigo-400 count-up" data-target="20">0</h3>
-        <p class="text-lg text-gray-300 stats-text">+20 Machine Learning Projects</p>
-      </div>
-      <div data-aos="fade-up" data-aos-delay="300">
-        <h3 class="text-4xl font-bold text-indigo-400 count-up" data-target="10">0</h3>
-        <p class="text-lg text-gray-300 stats-text">+10 Neural Network Projects</p>
-      </div>
-      <div data-aos="fade-up" data-aos-delay="400">
-        <h3 class="text-4xl font-bold text-indigo-400 count-up" data-target="2">0</h3>
-        <p class="text-lg text-gray-300 stats-text">Certificates</p>
-      </div>
+  <!-- Education Section -->
+  <section id="education" class="py-12 sm:py-16 md:py-20 lg:py-24 container mx-auto px-4 sm:px-6 lg:px-8 parallax bg-gray-900/50">
+    <h2 class="text-3xl font-bold text-center mb-8 section-title" data-aos="fade-up">Education</h2>
+    <div class="about-card rounded-lg p-8 max-w-3xl mx-auto text-center text-gray-300" data-aos="zoom-in" data-aos-delay="100">
+      <h3 class="text-xl font-semibold mb-2">Banha University</h3>
+      <p class="text-lg text-gray-400 mb-2">Faculty of Computers and Artificial Intelligence</p>
+      <p class="text-lg text-gray-400">2022 - 2026</p>
     </div>
   </section>
-
-  <!-- Projects Section -->
-  <section id="projects" class="py-20 pb-32 container mx-auto px-4 sm:px-6 lg:px-8 parallax" style="z-index: 10;">
-    <h2 class="text-3xl font-bold text-center mb-8 section-title" data-aos="fade-up">My Projects</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10">
-      <!-- Project 1 -->
-      <div class="card rounded-lg shadow-lg p-6" data-aos="slide-up" data-aos-delay="100">
-        <a href="project1.jpg" target="_blank">
-          <img src="project1.jpg" alt="House Rent Prediction" class="project-img rounded mb-4">
-        </a>
-        <h3 class="text-xl font-semibold mb-2">House Rent Prediction</h3>
-        <p class="text-gray-400 mb-4">A regression model to predict house rent prices in various cities using machine learning techniques.</p>
-        <a href="https://github.com/MazenEmad14/House-Rent-Prediction" class="text-indigo-400 hover:underline">View Project</a>
-      </div>
-      <!-- Project 2 -->
-      <div class="card rounded-lg shadow-lg p-6" data-aos="slide-up" data-aos-delay="200">
-        <a href="project2.jpg" target="_blank">
-          <img src="project2.jpg" alt="Student Performance" class="project-img rounded mb-4">
-        </a>
-        <h3 class="text-xl font-semibold mb-2">Student Performance</h3>
-        <p class="text-gray-400 mb-4">A regression model to predict student exam scores based on lifestyle factors.</p>
-        <a href="https://github.com/MazenEmad14/Student-Performance" class="text-indigo-400 hover:underline">View Project</a>
-      </div>
-      <!-- Project 3 -->
-      <div class="card rounded-lg shadow-lg p-6" data-aos="slide-up" data-aos-delay="300">
-        <a href="project3.jpg" target="_blank">
-          <img src="project3.jpg" alt="Credit Score Classification" class="project-img rounded mb-4">
-        </a>
-        <h3 class="text-xl font-semibold mb-2">Credit Score Classification</h3>
-        <p class="text-gray-400 mb-4">A classification model to predict and classify credit scores using machine learning algorithms.</p>
-        <a href="https://github.com/MazenEmad14/Credit-score-classificationCredit-score-classification" class="text-indigo-400 hover:underline">View Project</a>
-      </div>
-      <!-- Project 4 -->
-      <div class="card rounded-lg shadow-lg p-6" data-aos="slide-up" data-aos-delay="400">
-        <a href="project4.jpg" target="_blank">
-          <img src="project4.jpg" alt="Weather Classification" class="project-img rounded mb-4">
-        </a>
-        <h3 class="text-xl font-semibold mb-2">Weather Classification</h3>
-        <p class="text-gray-400 mb-4">A classification model to predict whether it will rain tomorrow based on weather data.</p>
-        <a href="https://github.com/MazenEmad14/weatherAUS" class="text-indigo-400 hover:underline">View Project</a>
-      </div>
-    </div>
-  </section>
-
   <!-- Courses Section -->
-  <section id="courses" class="py-16 mt-16 bg-gray-900/50 parallax" style="z-index: 5;">
+  <section id="courses" class="py-12 sm:py-16 md:py-20 lg:py-24 container mx-auto px-4 sm:px-6 lg:px-8 parallax bg-gray-900/50" style="z-index: 5;">
     <h2 class="text-3xl font-bold text-center mb-8 section-title" data-aos="fade-up">Courses</h2>
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10">
       <!-- Course 1 -->
@@ -350,46 +336,240 @@
     </div>
   </section>
 
+
+
   <!-- Skills Section -->
-  <section id="skills" class="py-16 bg-gray-900 parallax">
-    <h2 class="text-3xl font-bold text-center mb-8 section-title" data-aos="fade-up">Skills</h2>
+  <section id="skills" class="py-12 sm:py-16 md:py-20 lg:py-24 container mx-auto px-4 sm:px-6 lg:px-8 parallax bg-gray-900/50">
+    <h2 class="text-3xl font-bold text-center mb-8 section-title text-white" data-aos="fade-up">Skills</h2>
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="100">Python</div>
-      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="300">SQL</div>
-      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="400">Data Structure</div>
-      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="400">Algorithms</div>
-      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="400">Problem Solving</div>
-      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="400">Critical Thinking</div>
-      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="500">Data Cleaning</div>
-      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="600">Data Visualization</div>
-      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="700">Feature Engineering</div>
-      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="800">Model Building</div>
-      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="100">Supervised Learning</div>
-      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="200">Unsupervised Learning</div>
-      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="300">Model Evaluation</div>
-      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="400">Hyperparameter Tuning</div>
-      <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition" data-aos="zoom-in" data-aos-delay="400">Git & GitHub</div>
+      <!-- Python -->
+      <div class="relative group">
+        <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition text-white cursor-pointer" data-aos="zoom-in" data-aos-delay="100">Python</div>
+        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-white text-gray-900 text-sm rounded-lg px-3 py-2 shadow-lg w-56 z-50">
+          Python is the main language for data manipulation, ML, and AI in Data Science.
+        </div>
+      </div>
+      <!-- SQL -->
+      <div class="relative group">
+        <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition text-white cursor-pointer" data-aos="zoom-in" data-aos-delay="300">SQL</div>
+        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-white text-gray-900 text-sm rounded-lg px-3 py-2 shadow-lg w-56 z-50">
+          SQL is used to query, clean, and prepare datasets stored in databases.
+        </div>
+      </div>
+      <!-- Data Structure -->
+      <div class="relative group">
+        <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition text-white cursor-pointer" data-aos="zoom-in" data-aos-delay="400">Data Structure</div>
+        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-white text-gray-900 text-sm rounded-lg px-3 py-2 shadow-lg w-56 z-50">
+          Data structures organize datasets for efficient storage and faster processing in models.
+        </div>
+      </div>
+      <!-- Algorithms -->
+      <div class="relative group">
+        <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition text-white cursor-pointer" data-aos="zoom-in" data-aos-delay="400">Algorithms</div>
+        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-white text-gray-900 text-sm rounded-lg px-3 py-2 shadow-lg w-56 z-50">
+          Algorithms are used in ML training, optimization, and predictive modeling.
+        </div>
+      </div>
+      <!-- Problem Solving -->
+      <div class="relative group">
+        <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition text-white cursor-pointer" data-aos="zoom-in" data-aos-delay="400">Problem Solving</div>
+        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-white text-gray-900 text-sm rounded-lg px-3 py-2 shadow-lg w-56 z-50">
+          Problem solving helps in framing business problems into data science solutions.
+        </div>
+      </div>
+      <!-- Critical Thinking -->
+      <div class="relative group">
+        <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition text-white cursor-pointer" data-aos="zoom-in" data-aos-delay="400">Critical Thinking</div>
+        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-white text-gray-900 text-sm rounded-lg px-3 py-2 shadow-lg w-56 z-50">
+          Critical thinking is key for interpreting data insights and validating results.
+        </div>
+      </div>
+      <!-- Data Cleaning -->
+      <div class="relative group">
+        <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition text-white cursor-pointer" data-aos="zoom-in" data-aos-delay="500">Data Cleaning</div>
+        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-white text-gray-900 text-sm rounded-lg px-3 py-2 shadow-lg w-56 z-50">
+          Data cleaning ensures accuracy and quality by handling missing or inconsistent data.
+        </div>
+      </div>
+      <!-- Data Visualization -->
+      <div class="relative group">
+        <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition text-white cursor-pointer" data-aos="zoom-in" data-aos-delay="600">Data Visualization</div>
+        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-white text-gray-900 text-sm rounded-lg px-3 py-2 shadow-lg w-56 z-50">
+          Data visualization communicates insights clearly using charts and graphs.
+        </div>
+      </div>
+      <!-- Feature Engineering -->
+      <div class="relative group">
+        <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition text-white cursor-pointer" data-aos="zoom-in" data-aos-delay="700">Feature Engineering</div>
+        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-white text-gray-900 text-sm rounded-lg px-3 py-2 shadow-lg w-56 z-50">
+          Feature engineering creates meaningful inputs to improve ML model performance.
+        </div>
+      </div>
+      <!-- Model Building -->
+      <div class="relative group">
+        <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition text-white cursor-pointer" data-aos="zoom-in" data-aos-delay="800">Model Building</div>
+        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-white text-gray-900 text-sm rounded-lg px-3 py-2 shadow-lg w-56 z-50">
+          Model building trains ML algorithms to make predictions from data.
+        </div>
+      </div>
+      <!-- Supervised Learning -->
+      <div class="relative group">
+        <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition text-white cursor-pointer" data-aos="zoom-in" data-aos-delay="100">Supervised Learning</div>
+        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-white text-gray-900 text-sm rounded-lg px-3 py-2 shadow-lg w-56 z-50">
+          Supervised learning is used for tasks like classification and regression.
+        </div>
+      </div>
+      <!-- Unsupervised Learning -->
+      <div class="relative group">
+        <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition text-white cursor-pointer" data-aos="zoom-in" data-aos-delay="200">Unsupervised Learning</div>
+        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-white text-gray-900 text-sm rounded-lg px-3 py-2 shadow-lg w-56 z-50">
+          Unsupervised learning is used for clustering and finding hidden patterns in data.
+        </div>
+      </div>
+      <!-- Model Evaluation -->
+      <div class="relative group">
+        <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition text-white cursor-pointer" data-aos="zoom-in" data-aos-delay="300">Model Evaluation</div>
+        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-white text-gray-900 text-sm rounded-lg px-3 py-2 shadow-lg w-56 z-50">
+          Model evaluation checks accuracy and reliability of ML models.
+        </div>
+      </div>
+      <!-- Hyperparameter Tuning -->
+      <div class="relative group">
+        <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition text-white cursor-pointer" data-aos="zoom-in" data-aos-delay="400">Hyperparameter Tuning</div>
+        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-white text-gray-900 text-sm rounded-lg px-3 py-2 shadow-lg w-56 z-50">
+          Hyperparameter tuning optimizes models for better performance and generalization.
+        </div>
+      </div>
+      <!-- Git & GitHub -->
+      <div class="relative group">
+        <div class="card p-4 rounded-lg text-center hover:bg-indigo-600 transition text-white cursor-pointer" data-aos="zoom-in" data-aos-delay="400">Git & GitHub</div>
+        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-white text-gray-900 text-sm rounded-lg px-3 py-2 shadow-lg w-56 z-50">
+          Git & GitHub manage code versions and collaboration in data science projects.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects & Stats Section -->
+  <section id="projects" class="py-16 sm:py-20 md:py-24 lg:py-28 container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl parallax bg-gray-900/50" style="z-index: 10; margin-bottom: 6rem;">
+    <!-- Title -->
+    <h2 class="text-5xl font-bold text-center mb-10 mt-[-1.5rem] section-title text-white" data-aos="fade-up">
+      Projects & Achievements
+    </h2>
+    <!-- Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center mb-12">
+      <div data-aos="fade-up" data-aos-delay="200">
+        <h3 class="text-5xl font-bold text-indigo-400 count-up" data-target="20">0</h3>
+        <p class="text-lg text-gray-300 stats-text">20+ ML Projects</p>
+      </div>
+      <div data-aos="fade-up" data-aos-delay="300">
+        <h3 class="text-5xl font-bold text-indigo-400 count-up" data-target="10">0</h3>
+        <p class="text-lg text-gray-300 stats-text">10+ Neural Network Projects</p>
+      </div>
+      <div data-aos="fade-up" data-aos-delay="400">
+        <h3 class="text-5xl font-bold text-indigo-400 count-up" data-target="2">0</h3>
+        <p class="text-lg text-gray-300 stats-text">Certificates</p>
+      </div>
+    </div>
+    <!-- Subtitle -->
+    <p class="text-center text-lg text-gray-300 mb-10" data-aos="fade-up" data-aos-delay="500">
+      Explore <span class="text-indigo-400 font-semibold">four key projects</span> from my portfolio:
+    </p>
+    <!-- Projects Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 lg:gap-12">
+      <!-- Project 1 -->
+      <div class="card rounded-lg shadow-lg p-12 bg-gray-800/60 flex flex-col" data-aos="slide-up" data-aos-delay="100">
+        <a href="project1.jpg" target="_blank">
+          <img src="project1.jpg" alt="House Rent Prediction" class="project-img rounded mb-4">
+        </a>
+        <h3 class="text-xl font-semibold mb-2 text-white">House Rent Prediction</h3>
+        <p class="text-base text-gray-400 mb-8 flex-grow">
+          A regression model predicting house rental prices using features like location, size, and amenities. Helps estimate fair rental values with techniques like feature engineering and RMSE evaluation.
+        </p>
+        <a href="https://github.com/MazenEmad14/House-Rent-Prediction" class="view-project-btn mt-auto">View Project</a>
+      </div>
+      <!-- Project 2 -->
+      <div class="card rounded-lg shadow-lg p-12 bg-gray-800/60 flex flex-col" data-aos="slide-up" data-aos-delay="200">
+        <a href="project2.jpg" target="_blank">
+          <img src="project2.jpg" alt="Student Performance" class="project-img rounded mb-4">
+        </a>
+        <h3 class="text-xl font-semibold mb-2 text-white">Student Performance</h3>
+        <p class="text-base text-gray-400 mb-8 flex-grow">
+          A predictive model estimating student exam scores based on study time, family support, and activities. Supports educators in identifying at-risk students using regression techniques.
+        </p>
+        <a href="https://github.com/MazenEmad14/Student-Performance" class="view-project-btn mt-auto">View Project</a>
+      </div>
+      <!-- Project 3 -->
+      <div class="card rounded-lg shadow-lg p-12 bg-gray-800/60 flex flex-col" data-aos="slide-up" data-aos-delay="300">
+        <a href="project3.jpg" target="_blank">
+          <img src="project3.jpg" alt="Credit Score Classification" class="project-img rounded mb-4">
+        </a>
+        <h3 class="text-xl font-semibold mb-2 text-white">Credit Score Classification</h3>
+        <p class="text-base text-gray-400 mb-8 flex-grow">
+          A classification model predicting credit scores (good, standard, or poor) to help financial institutions assess loan and credit card risks.
+        </p>
+        <a href="https://github.com/MazenEmad14/Credit-score-classification" class="view-project-btn mt-auto">View Project</a>
+      </div>
+      <!-- Project 4 -->
+      <div class="card rounded-lg shadow-lg p-12 bg-gray-800/60 flex flex-col" data-aos="slide-up" data-aos-delay="400">
+        <a href="project4.jpg" target="_blank">
+          <img src="project4.jpg" alt="Weather Classification" class="project-img rounded mb-4">
+        </a>
+        <h3 class="text-xl font-semibold mb-2 text-white">Weather Classification</h3>
+        <p class="text-base text-gray-400 mb-8 flex-grow">
+          A model predicting rainfall based on weather conditions like temperature, humidity, and wind speed.
+        </p>
+        <a href="https://github.com/MazenEmad14/weatherAUS" class="view-project-btn mt-auto">View Project</a>
+      </div>
     </div>
   </section>
 
   <!-- Contact Section -->
-  <section id="contact" class="py-16 pb-32 container mx-auto px-4 sm:px-6 lg:px-8 parallax" style="z-index: 15;">
-    <h2 class="text-3xl font-bold text-center mb-8 section-title" data-aos="fade-up">Contact Me</h2>
-    <div class="max-w-lg mx-auto text-center contact-links" data-aos="fade-up" data-aos-delay="100">
-      <p class="text-lg mb-4 text-gray-300">Interested in collaborating on an AI or Data Science project? Reach out!</p>
-      <p class="mb-4"><a href="mailto:Mazen7ektr@gmail.com" class="email-glow hover:text-indigo-400 transition">Email: Mazen7ektr@gmail.com</a></p>
-      <div class="flex justify-center space-x-4">
-        <a href="https://github.com/MazenEmad14" class="text-indigo-400 hover:underline">GitHub</a>
-        <a href="https://www.linkedin.com/in/mazen-emad14" class="text-indigo-400 hover:underline">LinkedIn</a>
-        <a href="https://wa.me/201011441742" class="text-indigo-400 hover:underline">WhatsApp</a>
+  <section id="contact" class="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-r from-indigo-900 via-gray-900 to-black text-white parallax z-20">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-4xl font-extrabold text-center mb-10 section-title text-indigo-400 drop-shadow-lg" data-aos="fade-up">
+        Contact Me
+      </h2>
+      <div class="max-w-xl mx-auto text-center contact-links bg-gray-800 bg-opacity-60 rounded-2xl p-8 shadow-2xl" data-aos="fade-up" data-aos-delay="100">
+        <p class="text-lg mb-6 text-gray-200">
+          🚀 Interested in collaborating on an <span class="text-indigo-400 font-semibold">AI</span> or 
+          <span class="text-indigo-400 font-semibold">Data Science</span> project? Reach out!
+        </p>
+        <!-- Email -->
+        <p class="mb-8">
+          <a href="mailto:Mazen7ektr@gmail.com" class="text-xl font-bold text-indigo-300 hover:text-white transition email-glow">
+            📧 Mazen7ektr@gmail.com
+          </a>
+        </p>
+        <!-- Social Links -->
+        <div class="flex justify-center space-x-6">
+          <a href="https://github.com/MazenEmad14" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-lg transition font-medium">
+            GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/mazen-emad14" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 rounded-xl shadow-lg transition font-medium">
+            LinkedIn
+          </a>
+          <a href="https://wa.me/201011441742" class="px-5 py-2 bg-green-600 hover:bg-green-700 rounded-xl shadow-lg transition font-medium">
+            WhatsApp
+          </a>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="bg-gray-800/50 text-center py-4 mt-16" style="z-index: 1;">
+  <footer class="bg-gray-800/50 text-center py-12 sm:py-16 md:py-20 lg:py-24" style="z-index: 1;">
     <p class="text-gray-300">© 2025 Mazen Emad Abdelhalim. All Rights Reserved.</p>
   </footer>
+
+  <style>
+    /* Glow effect for email */
+    .email-glow {
+      text-shadow: 0 0 10px rgba(99, 102, 241, 0.9),
+                   0 0 20px rgba(99, 102, 241, 0.6),
+                   0 0 30px rgba(99, 102, 241, 0.4);
+    }
+  </style>
 
   <script>
     // Initialize AOS
@@ -413,6 +593,26 @@
       });
     });
 
+    // Active Link Highlighting
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-menu a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (window.scrollY >= sectionTop - sectionHeight / 3) {
+          current = section.getAttribute('id');
+        }
+      });
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').slice(1) === current) {
+          link.classList.add('active');
+        }
+      });
+    });
+
     // GSAP Counter Animation for Stats
     document.querySelectorAll('.count-up').forEach(counter => {
       const target = +counter.getAttribute('data-target');
@@ -431,10 +631,10 @@
       });
     });
 
-    // GSAP Parallax Effect
+    // GSAP Parallax Effect (Subtler)
     gsap.utils.toArray('.parallax').forEach(section => {
       gsap.to(section, {
-        yPercent: 25,
+        yPercent: 10,
         ease: 'none',
         scrollTrigger: {
           trigger: section,
