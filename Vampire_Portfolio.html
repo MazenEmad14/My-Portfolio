@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mazen Emad - Hunter vs Vampire</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            hunter: ['Cinzel', 'serif'], 
+            vampire: ['Pirata One', 'cursive'], 
+            body: ['Cormorant Garamond', 'serif'], 
+          },
+          colors: {
+            holy: { 400: '#fde047', 500: '#d4af37', 600: '#b48a28', bg: '#f9f6f0' },
+            blood: { 400: '#ef4444', 500: '#8a0303', 600: '#5a0202', bg: '#070000' }
+          },
+          animation: {
+            'holy-glow': 'holy-glow 3s ease-in-out infinite alternate',
+            'blood-drip': 'blood-drip 2s infinite',
+            'float': 'float 5s ease-in-out infinite',
+          },
+          keyframes: {
+            'holy-glow': {
+              '0%': { boxShadow: '0 0 10px #d4af37, inset 0 0 10px #d4af37' },
+              '100%': { boxShadow: '0 0 30px #fde047, inset 0 0 20px #fde047' },
+            },
+            'float': {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-15px)' },
+            }
+          }
+        },
+      },
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Pirata+One&family=Cormorant+Garamond:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <style>
+    @media (pointer: fine) { body { cursor: none; } a, button { cursor: none; } }
+
+    body { background-color: #f9f6f0; color: #1e293b; overflow-x: hidden; transition: all 0.8s ease; scroll-behavior: smooth; }
+    html.dark body { background-color: #070000; color: #d1d5db; }
+
+    /* Scroll Progress Bar */
+    #scroll-progress {
+      position: fixed; top: 0; left: 0; height: 4px; width: 0%; z-index: 999999; transition: background-color 0.5s ease;
+    }
+    html:not(.dark) #scroll-progress { background: linear-gradient(90deg, #d4af37, #fde047); box-shadow: 0 0 10px #d4af37; }
+    html.dark #scroll-progress { background: linear-gradient(90deg, #5a0202, #8a0303); box-shadow: 0 0 10px #8a0303; }
+
+    /* Environment FX */
+    .bg-fx { position: fixed; inset: 0; z-index: -1; pointer-events: none; transition: opacity 1s ease; }
+    html:not(.dark) .bg-fx {
+      background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.15) 0%, transparent 60%);
+      background-image: url('https://www.transparenttextures.com/patterns/church.png'); opacity: 0.6;
+    }
+    html.dark .bg-fx {
+      background: radial-gradient(ellipse at 50% 100%, rgba(138, 3, 3, 0.2) 0%, transparent 70%);
+      background-image: url('https://www.transparenttextures.com/patterns/dark-matter.png'); opacity: 0.8; filter: contrast(1.2);
+    }
+
+    /* Custom Cursor */
+    #magic-cursor {
+      position: fixed; pointer-events: none; z-index: 100000; transform: translate(-50%, -50%); transition: width 0.1s, height 0.1s, border-radius 0.3s;
+    }
+    html:not(.dark) #magic-cursor { width: 30px; height: 30px; border: 2px solid #d4af37; border-radius: 0; transform: translate(-50%, -50%) rotate(45deg); box-shadow: inset 0 0 10px rgba(212,175,55,0.5); }
+    html.dark #magic-cursor { width: 20px; height: 20px; background: #8a0303; border-radius: 0 50% 50% 50%; transform: translate(-50%, -50%) rotate(45deg); box-shadow: 0 0 20px #8a0303; }
+    body.hovering html:not(.dark) #magic-cursor { transform: translate(-50%, -50%) rotate(135deg) scale(1.5); background: rgba(212,175,55,0.2); }
+    body.hovering html.dark #magic-cursor { transform: translate(-50%, -50%) rotate(45deg) scale(1.8); background: #ef4444; }
+
+    /* Particles */
+    #particles-container { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
+    .particle { position: absolute; pointer-events: none; transition: transform 2s ease-out, opacity 2s; }
+
+    /* Gothic Glassmorphism Cards */
+    .gothic-card {
+      position: relative; backdrop-filter: blur(10px); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid;
+    }
+    html:not(.dark) .gothic-card {
+      background: rgba(255, 255, 255, 0.7); border-color: rgba(212, 175, 55, 0.4);
+      border-radius: 30px 30px 5px 5px; border-top-width: 5px; border-top-color: #d4af37; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    html:not(.dark) .gothic-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2); background: white; }
+    html.dark .gothic-card {
+      background: rgba(10, 0, 0, 0.8); border-color: rgba(138, 3, 3, 0.3);
+      border-radius: 0; clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    html.dark .gothic-card:hover { border-color: #8a0303; transform: scale(1.03); box-shadow: 0 0 30px rgba(138, 3, 3, 0.4); }
+
+    /* Floating Dock */
+    .floating-dock {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 100;
+      display: flex; align-items: center; gap: 1rem; padding: 0.5rem 1rem;
+      backdrop-filter: blur(15px); border: 2px solid; border-radius: 50px; transition: all 0.5s;
+    }
+    html:not(.dark) .floating-dock { background: rgba(255,255,255,0.9); border-color: #d4af37; box-shadow: 0 10px 30px rgba(212,175,55,0.3); }
+    html.dark .floating-dock { background: rgba(10,0,0,0.9); border-color: #8a0303; border-radius: 0; box-shadow: 0 0 30px rgba(138,3,3,0.5); clip-path: polygon(15px 0, 100% 0, calc(100% - 15px) 100%, 0 100%); }
+
+    /* Modals */
+    .modal-overlay { opacity: 0; pointer-events: none; transition: opacity 0.4s ease; backdrop-filter: blur(15px); background: rgba(0,0,0,0.8); z-index: 9999; }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    .modal-content { transform: scale(0.9) translateY(50px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
+    html.dark ::-webkit-scrollbar-thumb { background: #8a0303; border-radius: 0; }
+  </style>
+</head>
+<body class="font-body text-xl">
+
+  <div id="scroll-progress"></div>
+  <div class="bg-fx"></div>
+  <div id="magic-cursor"></div>
+  <div id="particles-container"></div>
+
+  <nav class="floating-dock cursor-hover">
+    <div class="flex flex-col text-right mr-2 select-none">
+      <span class="dark:hidden font-hunter text-holy-600 font-bold text-sm tracking-widest leading-none">Holy Realm</span>
+      <span class="hidden dark:block font-vampire text-blood-500 text-lg tracking-widest leading-none">Dark Realm</span>
+      <span class="text-[10px] text-gray-500 uppercase tracking-widest">Switch World</span>
+    </div>
+    <button id="theme-toggle" class="w-14 h-14 flex items-center justify-center border-2 transition-all hover:scale-110 group bg-white dark:bg-black border-holy-500 dark:border-blood-500 rounded-full dark:rounded-none">
+      <svg class="w-8 h-8 text-holy-500 block dark:hidden group-hover:rotate-180 transition-transform duration-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+      <svg class="w-8 h-8 text-blood-500 hidden dark:block group-hover:scale-110 transition-transform duration-700" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" clip-rule="evenodd"/></svg>
+    </button>
+  </nav>
+
+  <nav class="w-full py-4 px-6 z-50 relative">
+    <div class="max-w-7xl mx-auto flex justify-center md:justify-between items-center">
+      <a href="#hero" class="text-3xl md:text-4xl cursor-hover">
+        <span class="dark:hidden font-hunter font-bold text-gray-900 tracking-widest">MAZEN<span class="text-holy-500">.AI</span></span>
+        <span class="hidden dark:inline font-vampire text-white tracking-widest drop-shadow-[0_0_8px_#8a0303]">MAZEN<span class="text-blood-500">.IMMORTAL</span></span>
+      </a>
+      <ul class="hidden md:flex space-x-8">
+        <li><a href="#experience" class="text-lg font-bold cursor-hover dark:hidden font-hunter text-gray-700 hover:text-holy-500 transition-colors">Chronicles</a></li>
+        <li><a href="#experience" class="text-2xl cursor-hover hidden dark:inline font-vampire text-gray-400 hover:text-white transition-colors">Centuries</a></li>
+        <li><a href="#powers" class="text-lg font-bold cursor-hover dark:hidden font-hunter text-gray-700 hover:text-holy-500 transition-colors">Holy Arsenal</a></li>
+        <li><a href="#powers" class="text-2xl cursor-hover hidden dark:inline font-vampire text-gray-400 hover:text-white transition-colors">Blood Magic</a></li>
+        <li><a href="#missions" class="text-lg font-bold cursor-hover dark:hidden font-hunter text-gray-700 hover:text-holy-500 transition-colors">Trophies</a></li>
+        <li><a href="#missions" class="text-2xl cursor-hover hidden dark:inline font-vampire text-gray-400 hover:text-white transition-colors">Nightmares</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section id="hero" class="min-h-[85vh] flex flex-col justify-center items-center text-center px-6 relative z-10">
+    <div class="relative w-48 h-48 md:w-64 md:h-64 mb-8 z-10 animate-float cursor-hover" onclick="openImageModal('profile.jpg')">
+      <div class="absolute inset-0 z-10 overflow-hidden border-4 shadow-2xl bg-black" id="hero-img-box">
+        <style>
+          html:not(.dark) #hero-img-box { border-color: #d4af37; border-radius: 50% 50% 0 0; }
+          html.dark #hero-img-box { border-color: #8a0303; border-radius: 0; transform: rotate(45deg); }
+        </style>
+        <img src="profile.jpg" alt="Mazen Emad" class="w-full h-full object-cover transition-all duration-700 hover:scale-110" id="hero-img">
+        <style>
+          html.dark #hero-img { transform: rotate(-45deg) scale(1.4); filter: grayscale(80%) contrast(150%) brightness(0.8) hue-rotate(320deg); }
+          html:not(.dark) #hero-img { filter: sepia(0.2) contrast(1.1); }
+          html.dark .group:hover #hero-img { filter: grayscale(0%) contrast(120%) brightness(1); }
+        </style>
+      </div>
+      <div class="absolute inset-[-20px] rounded-full filter blur-xl opacity-60 dark:opacity-40 -z-10 bg-holy-500 dark:bg-blood-500 animate-pulse"></div>
+    </div>
+
+    <div data-aos="fade-up">
+      <h3 class="dark:hidden text-holy-600 font-bold tracking-[0.3em] uppercase mb-2 text-sm border-b-2 border-holy-500 inline-block pb-1">The Lightbringer</h3>
+      <h3 class="hidden dark:block text-blood-500 font-vampire tracking-[0.2em] text-3xl mb-2 drop-shadow-[0_0_5px_#dc2626] border-b border-blood-500 inline-block pb-1">THE NIGHTWALKER</h3>
+      
+      <h1 class="dark:hidden font-hunter text-5xl md:text-8xl text-black font-black mb-2 tracking-wider">Mazen Emad</h1>
+      <h1 class="hidden dark:block font-vampire text-6xl md:text-9xl text-white mb-2 tracking-widest drop-shadow-[0_0_15px_#991b1b]">Mazen Emad</h1>
+      
+      <p class="text-xl md:text-2xl font-bold uppercase tracking-widest mb-6">
+        <span class="dark:hidden text-gray-700">Junior Data Scientist <span class="text-holy-500 mx-2">✦</span> ML Engineer</span>
+        <span class="hidden dark:inline text-gray-400">Data Scientist <span class="text-blood-500 mx-2">⚔</span> ML Architect</span>
+      </p>
+
+      <p class="text-lg md:text-xl leading-relaxed text-gray-700 dark:text-gray-300 font-bold mb-8 max-w-2xl mx-auto">
+        <span class="dark:hidden">Purifying the chaos of raw data into divine intelligence. I forge righteous ML models and autonomous generative applications to protect the digital realm.</span>
+        <span class="hidden dark:inline">Draining the life from raw data to awaken immortal intelligence. We mutate chaotic structures into autonomous, self-sustaining generative entities.</span>
+      </p>
+
+      <a href="Mazen Emad Junior Data Scientist _ Machine Learning Engineer.pdf" target="_blank" class="inline-block relative overflow-hidden group border-2 border-holy-500 dark:border-blood-600 px-8 py-4 font-bold tracking-widest uppercase cursor-hover bg-white/50 dark:bg-black/50 backdrop-blur-sm">
+        <span class="relative z-10 dark:hidden text-black group-hover:text-white transition-colors">Unseal Sacred Tome (CV)</span>
+        <span class="relative z-10 hidden dark:inline font-vampire text-2xl text-blood-400 group-hover:text-white transition-colors">Open Blood Pact (CV)</span>
+        <div class="absolute inset-0 bg-holy-500 dark:bg-blood-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out z-0"></div>
+      </a>
+    </div>
+  </section>
+
+  <section id="origin" class="py-20 px-6 relative z-10">
+    <div class="max-w-5xl mx-auto gothic-card p-8 md:p-12 cursor-hover" data-aos="fade-up">
+      <div class="flex flex-col md:flex-row gap-8 items-center">
+        <div class="md:w-2/3">
+          <h3 class="dark:hidden font-hunter text-3xl font-bold mb-4 text-holy-600 tracking-wider">The Awakening of Light</h3>
+          <h3 class="hidden dark:block font-vampire text-4xl mb-4 text-blood-500 tracking-widest">Bitten by Knowledge</h3>
+          <p class="text-lg leading-relaxed mb-4 font-bold text-gray-700 dark:text-gray-300">
+            <span class="dark:hidden">My journey didn't begin with a silver stake, but with an obsession for the hidden mechanics of systems like ChatGPT. As a student at BFCAI, I realized that mastering data is the ultimate weapon against chaos.</span>
+            <span class="hidden dark:inline">The journey didn't begin in a mortal classroom—it sparked from an insatiable hunger for the dark mechanics of systems like ChatGPT. Raw data is just blood waiting to be consumed.</span>
+          </p>
+        </div>
+        <div class="md:w-1/3 w-full border-t md:border-t-0 md:border-l border-holy-500 dark:border-blood-600 pt-6 md:pt-0 md:pl-8 text-center md:text-left">
+          <h4 class="font-hunter dark:font-vampire tracking-widest text-holy-600 dark:text-blood-500 mb-2 uppercase text-xl dark:text-3xl">Sacred Grounds</h4>
+          <p class="font-bold text-xl text-gray-900 dark:text-white">Banha University</p>
+          <p class="text-md text-gray-600 dark:text-gray-400 font-bold mb-4 uppercase">FCAI</p>
+          <div class="space-y-2 font-bold font-sans">
+            <div class="bg-white dark:bg-black border border-holy-500 dark:border-blood-600 px-3 py-1 text-sm text-gray-800 dark:text-gray-300">Path: AI Mastery</div>
+            <div class="bg-white dark:bg-black border border-holy-500 dark:border-blood-600 px-3 py-1 text-sm text-gray-800 dark:text-gray-300">Ritual: Data Alchemy</div>
+          </div>
+          <p class="font-hunter dark:font-vampire text-2xl dark:text-4xl mt-6 text-gray-500">2022 - 2026</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience" class="py-20 px-6 relative z-10">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="dark:hidden font-hunter font-bold text-4xl md:text-5xl text-center mb-12 text-gray-900 uppercase tracking-widest">Chronicles of the Hunt</h2>
+      <h2 class="hidden dark:block font-vampire text-5xl md:text-6xl text-center mb-12 text-white drop-shadow-[0_0_10px_#8a0303] tracking-widest">CENTURIES OF BLOODSHED</h2>
+      
+      <div class="gothic-card p-8 md:p-12 cursor-hover" data-aos="fade-up">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 border-b-2 border-holy-500 dark:border-blood-600 pb-4">
+          <div>
+            <h3 class="dark:hidden font-hunter font-bold text-3xl text-gray-900 tracking-wider">Data Scientist</h3>
+            <h3 class="hidden dark:block font-vampire text-4xl text-white tracking-widest">DATA ASSIMILATOR</h3>
+            <p class="font-bold text-2xl text-holy-600 dark:text-blood-500 mt-1 font-hunter dark:font-vampire tracking-widest">X_Clan</p>
+          </div>
+          <div class="text-left md:text-right mt-4 md:mt-0">
+            <span class="inline-block bg-holy-600 dark:bg-blood-600 text-white text-sm font-bold px-4 py-2 mb-1 tracking-widest">July 2025 - October 2025</span>
+            <p class="text-sm font-bold uppercase text-gray-600 dark:text-gray-400 tracking-widest mt-1">Egypt-Mansoura</p>
+          </div>
+        </div>
+        
+        <ul class="space-y-5 text-gray-800 dark:text-gray-300 font-bold text-lg leading-relaxed">
+          <li class="flex items-start">
+            <span class="text-holy-500 dark:text-blood-500 mr-3 text-2xl">⚔️</span>
+            <span class="dark:hidden">Processed 500+ GB of raw data and engineered 40+ features, reducing data preprocessing time by 30%.</span>
+            <span class="hidden dark:inline">Consumed 500+ GB of mortal data, mutating 40+ features and accelerating processing speed by 30%.</span>
+          </li>
+          <li class="flex items-start">
+            <span class="text-holy-500 dark:text-blood-500 mr-3 text-2xl">⚔️</span>
+            <span class="dark:hidden">Implemented predictive analytics pipelines utilizing Python and Apache Spark over 12-month project, forecasting customer behavior with 96% accuracy and improving acquisition conversion rates by 18% across 5 digital channels.</span>
+            <span class="hidden dark:inline">Spawned predictive pipelines via Python & Spark over a 12-month blood moon, predicting prey behavior with 96% accuracy and boosting acquisition conversion by 18% across 5 mortal channels.</span>
+          </li>
+          <li class="flex items-start">
+            <span class="text-holy-500 dark:text-blood-500 mr-3 text-2xl">⚔️</span>
+            <span class="dark:hidden">Deployed machine learning models into production environments, successfully serving 10,000+ daily requests during real-world testing.</span>
+            <span class="hidden dark:inline">Unleashed machine learning models into the night, surviving and processing 10,000+ daily requests in live combat environments.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="powers" class="py-20 px-6 relative z-10 overflow-hidden">
+    <div class="max-w-7xl mx-auto text-center">
+      <h2 class="dark:hidden font-hunter font-bold text-4xl md:text-5xl mb-12 text-gray-900 uppercase tracking-widest">The Holy Arsenal</h2>
+      <h2 class="hidden dark:block font-vampire text-5xl md:text-6xl mb-12 text-white drop-shadow-[0_0_10px_#8a0303] tracking-widest">BLOOD MAGIC & CURSES</h2>
+      
+      <div class="flex flex-wrap justify-center gap-3">
+        <script>
+          // ALL 25 Skills included!
+          const allSkills = [
+            { name: "Python", l: "Silver Bullet", d: "Blood Ritual" }, { name: "SQL", l: "Holy Archives", d: "Ancient Tomes" },
+            { name: "Data Structure", l: "Crossbow Frame", d: "Skeletal Structure" }, { name: "Algorithms", l: "Hunting Tactics", d: "Predator Instincts" },
+            { name: "Problem Solving", l: "Tracking", d: "Survival" }, { name: "Critical Thinking", l: "Hunter's Vision", d: "Night Vision" },
+            { name: "Git & GitHub", l: "Brotherhood Sync", d: "Coven Network" }, { name: "Data Cleaning", l: "Purification", d: "Draining" },
+            { name: "Data Visualization", l: "Holy Light", d: "Blood Scrying" }, { name: "Feature Engineering", l: "Silver Plating", d: "Mutation" },
+            { name: "Model Building", l: "Trap Crafting", d: "Flesh Golem" }, { name: "Supervised Learning", l: "Apprentice Training", d: "Thrall Command" },
+            { name: "Unsupervised Learning", l: "Wilderness Survival", d: "Chaos Magic" }, { name: "Model Evaluation", l: "Judgment", d: "Soul Weighing" },
+            { name: "Hyperparameter Tuning", l: "Weapon Calibration", d: "Dark Alchemy" }, { name: "Deep Learning", l: "Divine Networks", d: "Abyssal Veins" },
+            { name: "Neural Networks", l: "Holy Grid", d: "Hive Mind" }, { name: "NLP", l: "Exorcism Chants", d: "Telepathy" },
+            { name: "Computer Vision", l: "Eagle Eye", d: "Bat Sonar" }, { name: "Generative AI", l: "Creation Magic", d: "Necromancy" },
+            { name: "LLMs", l: "Ancient Prophets", d: "Elder Gods" }, { name: "Prompt Engineering", l: "Divine Prayers", d: "Dark Whispers" },
+            { name: "TensorFlow / PyTorch", l: "Holy Engines", d: "Infernal Cores" }, { name: "RAG & Fine Tuning", l: "Relic Enhancement", d: "Memory Consumption" },
+            { name: "MLOps & Deployment", l: "Guild Deployment", d: "Nightfall" }
+          ];
+          
+          allSkills.forEach((skill, i) => {
+            document.write(`
+              <div class="gothic-card !p-3 flex flex-col justify-center items-center text-center w-40 h-24 cursor-hover group" data-aos="zoom-in" data-aos-delay="${(i % 10) * 30}">
+                <span class="text-[10px] font-bold text-holy-500 uppercase tracking-widest mb-1 opacity-70 group-hover:opacity-100 dark:hidden">${skill.l}</span>
+                <span class="font-vampire text-lg text-blood-500 tracking-widest opacity-70 group-hover:opacity-100 hidden dark:block leading-none mb-1">${skill.d}</span>
+                <span class="font-bold text-sm md:text-base text-gray-800 dark:text-gray-300 group-hover:text-black dark:group-hover:text-white transition-colors leading-tight">${skill.name}</span>
+              </div>
+            `);
+          });
+        </script>
+      </div>
+    </div>
+  </section>
+
+  <section id="missions" class="py-20 px-6 relative z-10">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="dark:hidden font-hunter font-bold text-4xl md:text-5xl text-gray-900 uppercase tracking-widest">Trophies of the Hunt</h2>
+        <h2 class="hidden dark:block font-vampire text-5xl md:text-6xl text-white drop-shadow-[0_0_10px_#8a0303] tracking-widest">NIGHTMARE CREATIONS</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <script>
+          const projects = [
+            { id: 'meeting', titleLight: "AI Meeting Assistant", titleDark: "Multi-Agent Coven", descLight: "Assembled a holy council of AI agents powered by CrewAI & Gemini. They scribe audio, extract quests, and dispatch missives.", descDark: "Forged a dark coven of AI. They consume audio, extract vital secrets, summarize darkness, and spread whispers autonomously.", img: "project6.jpg" },
+            { id: 'attendance', titleLight: "Smart Attendance", titleDark: "Gaze of the Master", descLight: "Facial recognition security system guarding the gates with Python, OpenCV, and Streamlit.", descDark: "Prey recognition surveillance system. The master never loses sight in the dark.", img: "project5.jpg" },
+            { id: 'weather', titleLight: "Weather Oracle", titleDark: "Storm Summoner", descLight: "Classification model predicting rainfall and cleansing storms based on Australian conditions.", descDark: "Predicts chaotic storm environments to hunt effectively under heavy clouds.", img: "project4.jpg" },
+            { id: 'student', titleLight: "Scholar's Path", titleDark: "Mind Harvester", descLight: "Predictive analytics engine estimating student outcomes based on various behavioral metrics.", descDark: "Estimates target behavior outcomes for precise assimilation of minds.", img: "project2.jpg" }
+          ];
+
+          projects.forEach((p, i) => {
+            document.write(`
+              <div class="gothic-card !p-0 cursor-hover overflow-hidden group flex flex-col h-full" onclick="openProjectModal('${p.id}')" data-aos="fade-up" data-aos-delay="${i * 100}">
+                <div class="relative h-64 overflow-hidden">
+                  <style>
+                    html:not(.dark) .img-${p.id} { filter: sepia(0.3) brightness(1.1); }
+                    html:not(.dark) .group:hover .img-${p.id} { filter: sepia(0) brightness(1); transform: scale(1.05); }
+                    html.dark .img-${p.id} { filter: grayscale(1) contrast(1.5) brightness(0.7); }
+                    html.dark .group:hover .img-${p.id} { filter: grayscale(0.5) contrast(1.2) brightness(0.9) hue-rotate(320deg); transform: scale(1.05); }
+                  </style>
+                  <img src="${p.img}" class="img-${p.id} w-full h-full object-cover transition-all duration-700">
+                  <div class="absolute inset-0 bg-gradient-to-t from-white dark:from-black to-transparent opacity-90"></div>
+                </div>
+                <div class="p-8 flex-grow flex flex-col justify-start -mt-20 relative z-10">
+                  <h3 class="dark:hidden font-hunter font-bold text-2xl text-gray-900 mb-2">${p.titleLight}</h3>
+                  <h3 class="hidden dark:block font-vampire text-3xl text-white mb-2 tracking-widest">${p.titleDark}</h3>
+                  <p class="text-base font-bold text-gray-700 dark:text-gray-400">
+                    <span class="dark:hidden">${p.descLight}</span>
+                    <span class="hidden dark:inline">${p.descDark}</span>
+                  </p>
+                </div>
+              </div>
+            `);
+          });
+        </script>
+      </div>
+    </div>
+  </section>
+
+  <section id="artifacts" class="py-20 px-6 relative z-10">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="dark:hidden font-hunter font-bold text-4xl md:text-5xl text-center mb-12 text-gray-900 uppercase tracking-widest">Sacred Relics</h2>
+      <h2 class="hidden dark:block font-vampire text-5xl md:text-6xl text-center mb-12 text-white drop-shadow-[0_0_10px_#8a0303] tracking-widest">CURSED ARTIFACTS</h2>
+      
+      <div class="space-y-4">
+        <script>
+          const certs = [
+            { key: 'nvidia', lightProv: 'ITI & NVIDIA', darkProv: 'NVIDIA CULT', lightTitle: 'NVIDIA DLI: GenAI Applications', darkTitle: 'GEN-AI BLOOD PACT', status: 'Certified (Feb 2026)', abbr: 'NV' },
+            { key: 'depi', lightProv: 'DEPI Initiative', darkProv: 'DEPI COVEN', lightTitle: 'Generative & Agentic AI', darkTitle: 'AGENTIC NECROMANCY', status: 'In Progress', abbr: 'DE' },
+            { key: 'nlp_nti', lightProv: 'NTI & ITIDA', darkProv: 'NTI CRYPT', lightTitle: 'Natural Language Processing', darkTitle: 'LANGUAGE OF THE DEAD', status: 'Score: 85% (Aug 2025)', abbr: 'NTI' },
+            { key: 'machine_nti', lightProv: 'NTI - Digital Egypt', darkProv: 'NTI CRYPT', lightTitle: 'Machine Learning Mastery', darkTitle: 'ML DARK ARTS', status: 'Score: 91% (Jun 2025)', abbr: 'NTI' },
+            { key: 'iti', lightProv: 'ITI', darkProv: 'ITI MAINFRAME', lightTitle: 'AI Fundamentals', darkTitle: 'AI FORBIDDEN LORE', status: '72 Hours (Aug 2024)', abbr: 'ITI' }
+          ];
+
+          certs.forEach((c, i) => {
+             document.write(`
+               <div class="gothic-card !p-0 cursor-hover group" onclick="openCertModal('${c.key}')" data-aos="fade-up" data-aos-delay="${i * 50}">
+                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-6">
+                   <div class="flex items-center gap-6 mb-4 sm:mb-0">
+                     <div class="w-14 h-14 border-2 border-holy-500 dark:border-blood-600 flex justify-center items-center rounded-full dark:rounded-none bg-white/50 dark:bg-black/50">
+                       <span class="dark:hidden font-hunter font-bold text-lg text-holy-600">${c.abbr}</span>
+                       <span class="hidden dark:block font-vampire text-2xl text-blood-500 drop-shadow-[0_0_5px_#8a0303]">${c.abbr}</span>
+                     </div>
+                     <div>
+                       <h4 class="dark:hidden font-hunter font-bold text-xl text-gray-900 group-hover:text-holy-600 transition-colors tracking-wide">${c.lightTitle}</h4>
+                       <h4 class="hidden dark:block font-vampire text-2xl text-gray-300 group-hover:text-blood-500 transition-colors tracking-widest">${c.darkTitle}</h4>
+                       
+                       <p class="dark:hidden text-gray-600 font-bold text-xs uppercase tracking-widest mt-1">${c.lightProv}</p>
+                       <p class="hidden dark:block text-blood-600 font-sans font-bold text-xs uppercase tracking-widest mt-1">${c.darkProv}</p>
+                     </div>
+                   </div>
+                   <span class="dark:hidden font-bold text-gray-800 bg-holy-400 px-3 py-1 rounded-full uppercase text-[10px] tracking-widest shadow-md">${c.status}</span>
+                   <span class="hidden dark:block font-vampire text-lg text-gray-400 border-b border-blood-600 px-2 py-1 tracking-widest">${c.status}</span>
+                 </div>
+               </div>
+             `);
+          });
+        </script>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-24 px-6 relative z-10 text-center">
+    <h2 class="dark:hidden font-hunter font-bold text-4xl text-gray-900 mb-4 uppercase tracking-widest">Summon the Hunter</h2>
+    <h2 class="hidden dark:block font-vampire text-5xl text-white mb-4 tracking-widest drop-shadow-[0_0_10px_#8a0303]">OFFER YOUR BLOOD</h2>
+    
+    <p class="dark:hidden text-lg text-gray-700 font-bold mb-8 uppercase tracking-widest">Need a righteous architect to build generative intelligence?</p>
+    <p class="hidden dark:block text-lg text-gray-400 font-bold mb-8 tracking-widest uppercase">Need a vampire to build immortal intelligence?</p>
+
+    <a href="mailto:Mazen7ektr@gmail.com" class="inline-block text-2xl md:text-3xl font-bold tracking-widest border-b-2 border-holy-500 dark:border-blood-600 pb-2 mb-10 cursor-hover">
+      <span class="dark:hidden text-holy-600 hover:text-black transition-colors">MAZEN7EKTR@GMAIL.COM</span>
+      <span class="hidden dark:inline text-blood-500 hover:text-white transition-colors font-vampire">Mazen7ektr@gmail.com</span>
+    </a>
+    
+    <div class="flex justify-center gap-8 font-bold tracking-widest uppercase text-sm md:text-base">
+      <a href="https://github.com/MazenEmad14" target="_blank" class="cursor-hover dark:hidden text-gray-600 hover:text-holy-600 transition-colors">Guild Repo (GitHub)</a>
+      <a href="https://github.com/MazenEmad14" target="_blank" class="cursor-hover hidden dark:inline text-gray-500 hover:text-white transition-colors font-vampire text-2xl">Coven Vault (GitHub)</a>
+      
+      <a href="https://www.linkedin.com/in/mazen-emad14" target="_blank" class="cursor-hover dark:hidden text-gray-600 hover:text-holy-600 transition-colors">Brotherhood (LinkedIn)</a>
+      <a href="https://www.linkedin.com/in/mazen-emad14" target="_blank" class="cursor-hover hidden dark:inline text-gray-500 hover:text-white transition-colors font-vampire text-2xl">Bloodline (LinkedIn)</a>
+      
+      <a href="https://wa.me/201011441742" target="_blank" class="cursor-hover dark:hidden text-gray-600 hover:text-holy-600 transition-colors">Beacon (WhatsApp)</a>
+      <a href="https://wa.me/201011441742" target="_blank" class="cursor-hover hidden dark:inline text-gray-500 hover:text-white transition-colors font-vampire text-2xl">Whispers (WhatsApp)</a>
+    </div>
+    <div class="mt-16 pb-20 text-xs text-gray-400 font-bold uppercase tracking-widest">© 2026 Mazen Emad. Masterpiece Edition.</div>
+  </section>
+
+  <div id="unified-modal" class="modal-overlay fixed inset-0 flex justify-center items-center p-4">
+    <div class="absolute inset-0 cursor-hover" onclick="closeModal('unified-modal')"></div>
+    <div class="modal-content gothic-card relative w-full max-w-4xl flex flex-col md:flex-row z-10 overflow-hidden !p-0">
+      <div class="w-full md:w-1/2 p-10 flex flex-col justify-center">
+        <h2 id="m-title-light" class="dark:hidden font-hunter text-3xl font-black mb-2 text-gray-900 uppercase">Title</h2>
+        <h2 id="m-title-dark" class="hidden dark:block font-vampire text-4xl mb-2 text-white tracking-widest">Title</h2>
+        
+        <p id="m-provider-light" class="dark:hidden font-bold text-holy-600 mb-6 text-sm uppercase tracking-widest border-b border-holy-400 pb-2">Provider</p>
+        <p id="m-provider-dark" class="hidden dark:block font-bold text-blood-500 mb-6 text-sm uppercase tracking-widest border-b border-blood-600 pb-2">Provider</p>
+        
+        <p id="m-desc-light" class="dark:hidden text-gray-800 font-bold text-lg mb-8 leading-relaxed">Description</p>
+        <p id="m-desc-dark" class="hidden dark:block text-gray-300 font-bold text-lg mb-8 leading-relaxed">Description</p>
+        
+        <a id="m-link-light" href="#" target="_blank" class="dark:hidden inline-block border-2 border-holy-500 px-6 py-3 font-bold uppercase tracking-widest text-center cursor-hover hover:bg-holy-500 hover:text-white transition-colors text-sm">Inspect Relic</a>
+        <a id="m-link-dark" href="#" target="_blank" class="hidden dark:inline-block border border-blood-600 bg-black/50 px-6 py-3 font-vampire tracking-widest text-center cursor-hover hover:bg-blood-600 hover:text-white transition-colors text-2xl text-blood-400">Assimilate Data</a>
+      </div>
+      <div class="w-full md:w-1/2 bg-black flex items-center justify-center p-4">
+        <img id="m-img" src="" class="max-w-full max-h-[40vh] object-contain border-2 border-holy-500 dark:border-blood-600 transition-all duration-500" alt="Preview">
+      </div>
+      <button onclick="closeModal('unified-modal')" class="absolute top-2 right-2 bg-holy-500 dark:bg-blood-600 text-white w-10 h-10 flex justify-center items-center cursor-hover font-bold hover:scale-110 transition-transform z-20">X</button>
+    </div>
+  </div>
+
+  <div id="image-modal" class="modal-overlay fixed inset-0 flex justify-center items-center bg-black/95">
+    <div class="absolute inset-0 cursor-hover" onclick="closeModal('image-modal')"></div>
+    <div class="modal-content relative z-10 border-4 border-holy-500 dark:border-blood-600 p-2 bg-black">
+      <img id="modal-zoom-img" src="" class="max-w-[85vw] max-h-[85vh] object-contain transition-all duration-500" alt="Zoomed">
+    </div>
+    <button onclick="closeModal('image-modal')" class="absolute top-6 right-6 z-20 text-holy-500 dark:text-blood-500 text-4xl cursor-hover hover:scale-125 transition-transform font-bold">X</button>
+  </div>
+
+  <script>
+    // Scroll Progress
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      document.getElementById('scroll-progress').style.width = (winScroll / height) * 100 + "%";
+    });
+
+    // Custom Cursor & Particles
+    const cursor = document.getElementById('magic-cursor');
+    const particlesContainer = document.getElementById('particles-container');
+    let lastParticleTime = 0;
+    
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+      
+      const now = Date.now();
+      if (now - lastParticleTime > 50) { 
+        lastParticleTime = now;
+        if (Math.random() > 0.4) {
+          const p = document.createElement('div');
+          p.className = 'particle';
+          p.style.left = (e.clientX + (Math.random() * 20 - 10)) + 'px';
+          p.style.top = (e.clientY + (Math.random() * 20 - 10)) + 'px';
+          // Dark mode particles drop down, light mode fly up
+          const isDark = document.documentElement.classList.contains('dark');
+          p.style.transform = `translateY(${isDark ? '50px' : '-50px'})`;
+          p.style.opacity = '0';
+          
+          if(isDark) {
+            p.style.width = '6px'; p.style.height = '6px'; p.style.background = '#8a0303'; p.style.borderRadius = '50%';
+          } else {
+            p.style.width = '4px'; p.style.height = '4px'; p.style.background = '#d4af37'; p.style.boxShadow = '0 0 5px #fde047';
+          }
+
+          particlesContainer.appendChild(p);
+          // Trigger animation reflow
+          setTimeout(() => { p.style.transform = `translateY(${isDark ? '100px' : '-100px'}) scale(0)`; }, 10);
+          setTimeout(() => p.remove(), 2000);
+        }
+      }
+    });
+
+    document.querySelectorAll('.cursor-hover, a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+    });
+
+    // Modal Logic & Data
+    const modalData = {
+      certs: {
+        iti: { titleL: "AI Fundamentals", titleD: "AI FORBIDDEN LORE", provL: "ITI", provD: "ITI MAINFRAME", descL: "Intensive training covering: Introduction to AI, Math for ML, Data Preparation, and Deep Learning.", descD: "Raw data algorithms ingested successfully. 72 Hours.", file: "ITI.jpg", imgPreview: "ITI.jpg" },
+        machine_nti: { titleL: "Machine Learning Mastery", titleD: "ML DARK ARTS", provL: "NTI - Digital Egypt", provD: "NTI CRYPT", descL: "Digital Egypt Youth Program covering ML techniques (Score: 91%).", descD: "Advanced learning mutation protocols activated.", file: "Machine_NTI.pdf", imgPreview: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop" },
+        nlp_nti: { titleL: "Natural Language Processing", titleD: "LANGUAGE OF THE DEAD", provL: "NTI & ITIDA", provD: "NTI CRYPT", descL: "NLP algorithms, text processing, and generative AI foundations (Score: 85%).", descD: "Human language decoded and assimilated.", file: "NLP_NTI.pdf", imgPreview: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=800&auto=format&fit=crop" },
+        depi: { titleL: "Generative & Agentic AI", titleD: "AGENTIC NECROMANCY", provL: "DEPI Initiative", provD: "DEPI COVEN", descL: "Intensive training on Transformers, LLMs, RAG, and Multi-Agent systems.", descD: "Autonomous entities spawned inside the dark network.", file: "#", imgPreview: "WhatsApp Image 2026-03-02 at 5.36.39 AM (1).jpeg" },
+        nvidia: { titleL: "NVIDIA DLI: GenAI", titleD: "GEN-AI BLOOD PACT", provL: "ITI & NVIDIA", provD: "NVIDIA CULT", descL: "Specialized training in building LLM applications, Prompt Engineering, and RAG.", descD: "GPU-accelerated thought patterns integrated.", file: "#", imgPreview: "image_511e7f.png" }
+      },
+      projects: {
+        student: { titleL: "Scholar's Path", titleD: "Mind Harvester", provL: "GUILD REPO", provD: "TARGET REGISTRY", descL: "A predictive machine learning model to estimate student exam scores based on study time, family support, etc.", descD: "Estimates target behavior outcomes for precise assimilation of minds.", img: "project2.jpg", link: "https://github.com/MazenEmad14/Student-Performance" },
+        weather: { titleL: "Weather Oracle", titleD: "Storm Summoner", provL: "GUILD REPO", provD: "TARGET REGISTRY", descL: "Classification model predicting rainfall based on Australian weather conditions.", descD: "Predicts chaotic storm environments to hunt effectively in darkness.", img: "project4.jpg", link: "https://github.com/MazenEmad14/weatherAUS" },
+        attendance: { titleL: "Smart Attendance", titleD: "Gaze of the Master", provL: "GUILD REPO", provD: "TARGET REGISTRY", descL: "Facial recognition security system guarding the gates with OpenCV and Streamlit.", descD: "Prey recognition surveillance system. The master never loses sight.", img: "project5.jpg", link: "https://github.com/MazenEmad14/Smart-Attendance-System" },
+        meeting: { titleL: "AI Meeting Assistant", titleD: "Multi-Agent Coven", provL: "GUILD REPO", provD: "TARGET REGISTRY", descL: "Multi-Agent system powered by CrewAI and Gemini. Transcribes audio, extracts tasks, and sends emails.", descD: "Forged a dark coven of AI. They consume audio, extract secrets, and spread whispers autonomously.", img: "project6.jpg", link: "https://github.com/MazenEmad14/AI-Meeting-Assistant" }
+      }
+    };
+
+    function applyImageTheme(imgElement) {
+        if (document.documentElement.classList.contains('dark')) {
+            imgElement.style.filter = "grayscale(80%) contrast(150%) brightness(0.8) hue-rotate(320deg)";
+        } else {
+            imgElement.style.filter = "sepia(0.2) contrast(1.1)";
+        }
+    }
+
+    function openModal(id) { 
+      document.getElementById(id).classList.add('active'); 
+      document.body.style.overflow = 'hidden'; 
+    }
+    function closeModal(id) { 
+      document.getElementById(id).classList.remove('active'); 
+      setTimeout(() => document.body.style.overflow = 'auto', 400); 
+    }
+
+    function populateModal(type, key) {
+      const d = modalData[type][key];
+      document.getElementById('m-title-light').textContent = d.titleL;
+      document.getElementById('m-title-dark').textContent = d.titleD;
+      document.getElementById('m-provider-light').textContent = d.provL;
+      document.getElementById('m-provider-dark').textContent = d.provD;
+      document.getElementById('m-desc-light').textContent = d.descL;
+      document.getElementById('m-desc-dark').textContent = d.descD;
+      
+      const isCert = type === 'certs';
+      document.getElementById('m-link-light').href = isCert ? d.file : d.link;
+      document.getElementById('m-link-dark').href = isCert ? d.file : d.link;
+      
+      const img = document.getElementById('m-img');
+      img.src = isCert ? d.imgPreview : d.img;
+      applyImageTheme(img);
+    }
+
+    function openCertModal(key) { populateModal('certs', key); openModal('unified-modal'); }
+    function openProjectModal(key) { populateModal('projects', key); openModal('unified-modal'); }
+
+    function openImageModal(src) {
+        const img = document.getElementById('modal-zoom-img');
+        img.src = src;
+        applyImageTheme(img);
+        openModal('image-modal');
+    }
+
+    // Theme Toggle (Hunter <-> Vampire)
+    const themeBtn = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+
+    // Start in Light mode unless local storage says Dark
+    if (localStorage.getItem('theme') === 'dark') { html.classList.add('dark'); } 
+    else { html.classList.remove('dark'); }
+
+    themeBtn.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+      
+      // Update open modal images if any
+      const mImg = document.getElementById('m-img');
+      const zImg = document.getElementById('modal-zoom-img');
+      if(mImg.src) applyImageTheme(mImg);
+      if(zImg.src) applyImageTheme(zImg);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') { closeModal('unified-modal'); closeModal('image-modal'); }
+    });
+
+    // Init AOS
+    AOS.init({ duration: 1000, once: true, offset: 50 });
+  </script>
+</body>
+</html>
