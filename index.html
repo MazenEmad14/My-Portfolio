@@ -937,11 +937,17 @@
     /* ---- PROJECTS ---- */
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 24px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
     }
 
-    @media(max-width:768px) {
+    @media(max-width:900px) {
+      .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media(max-width:600px) {
       .projects-grid {
         grid-template-columns: 1fr;
       }
@@ -950,136 +956,50 @@
     .proj-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      transition: transform .4s cubic-bezier(.23, 1, .32, 1), border-color .3s, box-shadow .3s;
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: transform .4s, border-color .3s, box-shadow .3s;
       cursor: pointer;
       position: relative;
+      overflow: hidden;
     }
 
     .proj-card:hover {
       transform: translateY(-6px);
-      border-color: rgba(6, 182, 212, .3);
-      box-shadow: 0 20px 60px rgba(6, 182, 212, .1);
+      border-color: rgba(6, 182, 212, .4);
+      box-shadow: 0 15px 40px rgba(6, 182, 212, .12);
     }
 
-    .proj-card.featured {
-      grid-column: span 2;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-    }
-
-    @media(max-width:768px) {
-      .proj-card.featured {
-        grid-column: span 1;
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .proj-img-wrap {
-      height: 220px;
-      overflow: hidden;
-      position: relative;
-      background: var(--bg2);
-    }
-
-    .proj-card.featured .proj-img-wrap {
-      height: auto;
-    }
-
-    .proj-img-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform .6s ease;
-      filter: brightness(.8) saturate(.9);
-    }
-
-    .proj-card:hover .proj-img-wrap img {
-      transform: scale(1.05);
-      filter: brightness(.9) saturate(1.1);
-    }
-
-    .proj-img-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(5, 5, 16, .9) 0%, transparent 60%);
-    }
-
-    .proj-body {
-      padding: 28px;
+    .proj-card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
       display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .proj-num {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 11px;
-      color: var(--accent);
-      letter-spacing: .2em;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
     }
 
     .proj-title {
       font-family: 'Syne', sans-serif;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 700;
-      line-height: 1.2;
+      line-height: 1.3;
+      margin-bottom: 4px;
     }
 
     .proj-desc {
       font-size: 14px;
       color: var(--muted);
-      line-height: 1.65;
-      flex-grow: 1;
-    }
-
-    .proj-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .proj-tag {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 10px;
-      color: var(--accent2);
-      border: 1px solid rgba(6, 182, 212, .2);
-      padding: 4px 10px;
-      border-radius: 20px;
-      background: rgba(6, 182, 212, .05);
-    }
-
-    .proj-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 11px;
-      color: var(--accent2);
-      text-decoration: none;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      margin-top: 4px;
-      transition: gap .3s, color .3s;
-    }
-
-    .proj-link:hover {
-      gap: 14px;
-      color: #fff;
-    }
-
-    .proj-featured-badge {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 10px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #fff;
-      padding: 4px 12px;
-      border-radius: 20px;
-      letter-spacing: .1em;
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     /* ---- SKILLS ---- */
@@ -1739,10 +1659,19 @@
 
     /* ---- CUSTOM CURSOR ---- */
     @media(min-width: 769px) {
-      html, body, a, button, .hero-photo-wrap, .cert-card, .proj-card, .modal-close {
+
+      html,
+      body,
+      a,
+      button,
+      .hero-photo-wrap,
+      .cert-card,
+      .proj-card,
+      .modal-close {
         cursor: none !important;
       }
     }
+
     #custom-cursor {
       position: fixed;
       top: 0;
@@ -1758,6 +1687,7 @@
       box-shadow: 0 0 10px var(--accent2), 0 0 20px var(--accent);
       will-change: transform;
     }
+
     body:has(a:hover) #custom-cursor,
     body:has(button:hover) #custom-cursor,
     body:has(.hero-photo-wrap:hover) #custom-cursor,
@@ -1770,8 +1700,11 @@
       border: 1px solid var(--accent);
       box-shadow: 0 0 15px var(--accent);
     }
+
     @media(max-width:768px) {
-      #custom-cursor { display: none; }
+      #custom-cursor {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -1782,7 +1715,8 @@
 
   <!-- LOADER -->
   <div id="loader">
-    <div class="loader-line" style="font-size: 18px; text-align: center; color: var(--accent2); margin-bottom: 20px;">$ Deploying intelligence... Welcome to my portfolio.</div>
+    <div class="loader-line" style="font-size: 18px; text-align: center; color: var(--accent2); margin-bottom: 20px;">$
+      Deploying intelligence... Welcome to my portfolio.</div>
     <div class="loader-bar-wrap">
       <div class="loader-bar"></div>
     </div>
@@ -1841,7 +1775,8 @@
       </div>
 
       <!-- CENTER: Photo -->
-      <div class="hero-photo-wrap" style="opacity:0;transform:translateY(20px);cursor:pointer;" onclick="openModal('profile')">
+      <div class="hero-photo-wrap" style="opacity:0;transform:translateY(20px);cursor:pointer;"
+        onclick="openModal('profile')">
         <div class="hero-photo-ring">
           <div class="hero-photo-inner">
             <img src="profile.jpg" alt="Mazen Emad — AI Engineer">
@@ -1936,25 +1871,34 @@
       <div class="section-title reveal">About <span>Me</span></div>
 
       <div class="reveal" style="max-width: 760px; margin-bottom: 56px;">
-    
-    <p style="font-size: 24px; font-weight: 700; color: var(--text-main); margin-bottom: 24px;">
-        Hi, I'm Mazen Emad,
-        an AI Engineer specializing in Data Science & Generative AI! 👋
-    </p>
 
-    <p style="font-size: 18px; color: rgba(200, 200, 230, 0.75); line-height: 1.8; font-weight: 300; margin-bottom: 20px;">
-        My fascination with AI didn't start in a classroom—it started with a deep curiosity about the intelligence behind tools like ChatGPT. Today, as an AI graduate from Benha University, I don’t just explore these systems; I engineer them.
-    </p>
+        <p style="font-size: 24px; font-weight: 700; color: var(--text-main); margin-bottom: 24px;">
+          Hi, I'm Mazen Emad,
+          an AI Engineer specializing in Data Science & Generative AI! 👋
+        </p>
 
-    <p style="font-size: 18px; color: rgba(200, 200, 230, 0.75); line-height: 1.8; font-weight: 300; margin-bottom: 20px;">
-        I specialize in bridging the gap between raw data and production-ready intelligence. My core expertise lies at the intersection of Data Science and Generative AI, where I build scalable end-to-end pipelines—from data preprocessing and feature engineering to deploying robust, context-aware RAG applications and Agentic workflows.
-    </p>
+        <p
+          style="font-size: 18px; color: rgba(200, 200, 230, 0.75); line-height: 1.8; font-weight: 300; margin-bottom: 20px;">
+          My fascination with AI didn't start in a classroom—it started with a deep curiosity about the intelligence
+          behind tools like ChatGPT. Today, as an AI graduate from Benha University, I don’t just explore these systems;
+          I engineer them.
+        </p>
 
-    <p style="font-size: 18px; color: rgba(200, 200, 230, 0.75); line-height: 1.8; font-weight: 300;">
-        I thrive on the challenge of turning complex data into actionable insights and building intelligent, generative applications that solve real-world problems. I'm always eager to push boundaries and build something impactful. Let's innovate together!
-    </p>
+        <p
+          style="font-size: 18px; color: rgba(200, 200, 230, 0.75); line-height: 1.8; font-weight: 300; margin-bottom: 20px;">
+          I specialize in bridging the gap between raw data and production-ready intelligence. My core expertise lies at
+          the intersection of Data Science and Generative AI, where I build scalable end-to-end pipelines—from data
+          preprocessing and feature engineering to deploying robust, context-aware RAG applications and Agentic
+          workflows.
+        </p>
 
-    </div>
+        <p style="font-size: 18px; color: rgba(200, 200, 230, 0.75); line-height: 1.8; font-weight: 300;">
+          I thrive on the challenge of turning complex data into actionable insights and building intelligent,
+          generative applications that solve real-world problems. I'm always eager to push boundaries and build
+          something impactful. Let's innovate together!
+        </p>
+
+      </div>
 
       <!-- USPs -->
       <div class="section-label reveal" style="margin-bottom:20px">// Why Me?</div>
@@ -1994,19 +1938,19 @@
       <div class="section-label reveal" style="margin-bottom:20px">// By the Numbers</div>
       <div class="counter-grid reveal" style="margin-bottom:56px;">
         <div class="counter-item">
-          <div class="counter-num" data-target="30">0</div>
+          <div class="counter-num" data-target="40">0</div>
           <div class="counter-label">ML Projects</div>
         </div>
         <div class="counter-item">
-          <div class="counter-num" data-target="15">0</div>
+          <div class="counter-num" data-target="30">0</div>
           <div class="counter-label">Deep Learning</div>
         </div>
         <div class="counter-item">
-          <div class="counter-num" data-target="8">0</div>
+          <div class="counter-num" data-target="25">0</div>
           <div class="counter-label">GenAI Apps</div>
         </div>
         <div class="counter-item">
-          <div class="counter-num" data-target="99">0</div>
+          <div class="counter-num" data-target="99.99">0</div>
           <div class="counter-label">% Get More Accuracy</div>
         </div>
       </div>
@@ -2031,7 +1975,7 @@
           </div>
         </div>
         <div class="edu-gpa">
-          3.5
+          3.537
           <span>/ 4.0 GPA</span>
         </div>
       </div>
@@ -2043,6 +1987,33 @@
     <div class="container">
       <div class="section-label reveal">003</div>
       <div class="section-title reveal">Work <span>Experience</span></div>
+
+      <!-- ADS Tek Experience -->
+      <div class="exp-card reveal">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role">AI Engineer & Backend Developer</div>
+            <div class="exp-company">ADS Tek · Giza, Egypt</div>
+          </div>
+          <span class="exp-date">AUG 2026 – Present</span>
+        </div>
+        <div class="exp-bullets">
+          <div class="exp-bullet">
+            <span>Architected and developed advanced AI features including <strong>LLMs, RAG pipelines, and AI
+                Agents</strong> utilizing <strong>LangChain</strong> and <strong>LangGraph</strong>.</span>
+          </div>
+          <div class="exp-bullet">
+            <span>Built scalable and robust backend APIs using <strong>Flask</strong> to seamlessly integrate
+              intelligent AI models into the company's core application.</span>
+          </div>
+          <div class="exp-bullet">
+            <span>Facilitated end-to-end full-stack integration by connecting Flask-based AI services with
+              <strong>Next.js</strong> frontends to deliver dynamic user experiences.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- X Clan Experience -->
       <div class="exp-card reveal">
         <div class="exp-header">
           <div>
@@ -2052,17 +2023,22 @@
           <span class="exp-date">Jul 2025 – Oct 2025</span>
         </div>
         <div class="exp-bullets">
-          <div class="exp-bullet">Processed large-scale datasets (<strong>500,000+ records</strong>) and engineered
-            <strong>100+ predictive features</strong>, automating data preparation and reducing preprocessing time by
-            <strong>30%</strong>.
+          <div class="exp-bullet">
+            <span>Processed large-scale datasets (<strong>500,000+ records</strong>) and engineered <strong>100+
+                predictive features</strong>, automating data preparation and reducing preprocessing time by
+              <strong>30%</strong>.</span>
           </div>
-          <div class="exp-bullet">Developed and fine-tuned ML models for predictive analytics, boosting baseline
-            accuracy by <strong>15%</strong> and achieving overall performance of <strong>92%</strong>.</div>
-          <div class="exp-bullet">Containerized and deployed models into production using <strong>FastAPI</strong> and
-            <strong>Docker</strong>, ensuring sub-second latency for real-time inference.
+          <div class="exp-bullet">
+            <span>Developed and fine-tuned ML models for predictive analytics, boosting baseline accuracy by
+              <strong>15%</strong> and achieving overall performance of <strong>92%</strong>.</span>
+          </div>
+          <div class="exp-bullet">
+            <span>Containerized and deployed models into production using <strong>FastAPI</strong> and
+              <strong>Docker</strong>, ensuring sub-second latency for real-time inference.</span>
           </div>
         </div>
       </div>
+
     </div>
   </section>
 
@@ -2073,108 +2049,70 @@
       <div class="section-title reveal">Featured <span>Projects</span></div>
       <div class="projects-grid">
 
-        <!-- Featured: Graduation Project -->
-        <div class="proj-card featured reveal" onclick="openModal('hema')">
-          <div class="proj-featured-badge">🎓 Graduation Project</div>
-          <div class="proj-img-wrap" style="min-height:280px;background:linear-gradient(135deg,#1a0030,#001530)">
-            <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:80px">🩸
-            </div>
-            <div class="proj-img-overlay"></div>
-          </div>
-          <div class="proj-body" style="justify-content:center">
-            <div class="proj-num">// 01</div>
-            <div class="proj-title">Hematology AI Diagnostic Agent</div>
-            <div class="proj-desc">Clinical decision support system using an agentic pipeline (LangGraph) orchestrating
-              3 specialized models — multimodal blood smear analysis, OCR lab report parsing, and CBC data processing.
-              Built with FastAPI for 100% uptime.</div>
-            <div class="proj-tags">
-              <span class="proj-tag">LangGraph</span>
-              <span class="proj-tag">FastAPI</span>
-              <span class="proj-tag">Multi-Modal</span>
-              <span class="proj-tag">OCR</span>
-              <span class="proj-tag">Agentic AI</span>
-            </div>
-            <a href="https://github.com/MazenEmad14" target="_blank" class="proj-link"
-              onclick="event.stopPropagation()">View on GitHub →</a>
+        <!-- ExusAI -->
+        <div class="proj-card reveal" onclick="openModal('exusai')">
+          <div class="proj-card-icon" style="background:linear-gradient(135deg,#1a0030,#2d1b4e)">🧠</div>
+          <div>
+            <div class="proj-title">NexusAI</div>
+            <div class="proj-desc">Automate your workflow via voice or text with NexusAI, a proactive assistant that
+              manages your emails, meetings, personal data, and web searches.</div>
           </div>
         </div>
 
-        <!-- Smart Consultant RAG -->
-        <div class="proj-card reveal" onclick="openModal('rag')">
-          <div class="proj-img-wrap" style="background:linear-gradient(135deg,#001a2c,#002a1a)">
-            <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:64px">🤖
-            </div>
-            <div class="proj-img-overlay"></div>
+        <!-- Hamatology -->
+        <div class="proj-card reveal" onclick="openModal('hema')">
+          <div class="proj-card-icon" style="background:linear-gradient(135deg,#1a0030,#001530)">🩸</div>
+          <div>
+            <div class="proj-title">Hamatology AI</div>
+            <div class="proj-desc">Transform clinical workflows with an end-to-end AI hematologist that fuses
+              multi-modal diagnostics with personalized treatment planning and step-by-step long-term tracking.</div>
           </div>
-          <div class="proj-body">
-            <div class="proj-num">// 02</div>
-            <div class="proj-title">Smart Consultant AI — RAG App</div>
-            <div class="proj-desc">Bilingual (AR/EN) Retrieval-Augmented Generation system with LangChain, FAISS vector
-              DB, and Llama 3 8B for context-aware PDF & YouTube analysis.</div>
-            <div class="proj-tags">
-              <span class="proj-tag">LangChain</span>
-              <span class="proj-tag">FAISS</span>
-              <span class="proj-tag">Llama 3</span>
-              <span class="proj-tag">RAG</span>
-              <span class="proj-tag">Streamlit</span>
-            </div>
-            <a href="https://github.com/MazenEmad14" target="_blank" class="proj-link"
-              onclick="event.stopPropagation()">View on GitHub →</a>
+        </div>
+
+        <!-- WhatsApp RAG -->
+        <div class="proj-card reveal" onclick="openModal('whatsapp-rag')">
+          <div class="proj-card-icon" style="background:linear-gradient(135deg,#001a2c,#0d5c3a)">💬</div>
+          <div>
+            <div class="proj-title">WhatsApp RAG Bot</div>
+            <div class="proj-desc">Intelligent WhatsApp integration with Retrieval-Augmented Generation for processing
+              chat history and documents in real-time.</div>
+          </div>
+        </div>
+
+        <!-- Smart Consultant -->
+        <div class="proj-card reveal" onclick="openModal('rag')">
+          <div class="proj-card-icon" style="background:linear-gradient(135deg,#001a2c,#002a1a)">🤖</div>
+          <div>
+            <div class="proj-title">Smart Consultant RAG</div>
+            <div class="proj-desc">Bilingual Retrieval-Augmented Generation system with LangChain, FAISS, and Llama 3
+              for context-aware document and video analysis.</div>
+          </div>
+        </div>
+
+        <!-- Agriculture Project -->
+        <div class="proj-card reveal" onclick="openModal('agriculture')">
+          <div class="proj-card-icon" style="background:linear-gradient(135deg,#0d3d1a,#1a2d0d)">🌾</div>
+          <div>
+            <div class="proj-title">Agriculture AI</div>
+            <div class="proj-desc">Smart farming solution with crop disease detection and yield prediction using
+              computer vision models.</div>
           </div>
         </div>
 
         <!-- Smart Attendance -->
         <div class="proj-card reveal" onclick="openModal('attendance')">
-          <div class="proj-img-wrap" style="background:linear-gradient(135deg,#1a1a00,#001a1a)">
-            <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:64px">
-              👁️</div>
-            <div class="proj-img-overlay"></div>
-          </div>
-          <div class="proj-body">
-            <div class="proj-num">// 03</div>
-            <div class="proj-title">AI Smart Attendance System</div>
-            <div class="proj-desc">Real-time facial recognition at 30 FPS with 99% accuracy for 500+ personnel. Manages
-              10,000+ daily logs with automated reporting — 80% overhead reduction.</div>
-            <div class="proj-tags">
-              <span class="proj-tag">OpenCV</span>
-              <span class="proj-tag">Deep Learning</span>
-              <span class="proj-tag">Streamlit</span>
-              <span class="proj-tag">SQLite</span>
-              <span class="proj-tag">Computer Vision</span>
-            </div>
-            <a href="https://github.com/MazenEmad14/Smart-Attendance-System" target="_blank" class="proj-link"
-              onclick="event.stopPropagation()">View on GitHub →</a>
-          </div>
-        </div>
-
-        <!-- AI Meeting Assistant -->
-        <div class="proj-card reveal" onclick="openModal('meeting')" style="grid-column: span 2"
-          class="proj-card reveal">
-          <div class="proj-img-wrap" style="background:linear-gradient(135deg,#200028,#000020)">
-            <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:64px">
-              🎙️</div>
-            <div class="proj-img-overlay"></div>
-          </div>
-          <div class="proj-body">
-            <div class="proj-num">// 04</div>
-            <div class="proj-title">AI Meeting Assistant</div>
-            <div class="proj-desc">Multi-Agent system (CrewAI + Gemini) that transcribes audio with Whisper, generates
-              meeting summaries, extracts structured JSON action items, and auto-sends follow-up emails.</div>
-            <div class="proj-tags">
-              <span class="proj-tag">CrewAI</span>
-              <span class="proj-tag">Gemini</span>
-              <span class="proj-tag">Whisper</span>
-              <span class="proj-tag">Multi-Agent</span>
-              <span class="proj-tag">Email Automation</span>
-            </div>
-            <a href="https://github.com/MazenEmad14/AI-Meeting-Assistant" target="_blank" class="proj-link"
-              onclick="event.stopPropagation()">View on GitHub →</a>
+          <div class="proj-card-icon" style="background:linear-gradient(135deg,#1a1a00,#2d2d0d)">👁️</div>
+          <div>
+            <div class="proj-title">AI Smart Attendance</div>
+            <div class="proj-desc">Production-grade facial recognition system operating at 30 FPS with 99% accuracy
+              managing 10,000+ daily logs.</div>
           </div>
         </div>
 
       </div>
     </div>
   </section>
+
 
   <!-- CERTIFICATIONS -->
   <section id="certs">
@@ -2186,9 +2124,9 @@
         <div class="cert-card reveal">
           <div class="cert-icon">🚀</div>
           <div class="cert-org">DEPI</div>
-          <div class="cert-name">Agentic AI &amp; Generative AI System Developer</div>
+          <div class="cert-name">AI & Data Science &amp; Generative AI Professional</div>
           <div class="cert-meta">Digital Egypt Pioneers Initiative · 2026</div>
-          <span class="cert-badge progress">In Progress</span>
+          <span class="cert-badge done">Certified</span>
         </div>
 
         <div class="cert-card reveal">
@@ -2331,7 +2269,8 @@
             <span class="skill-chip hot">Docker</span>
             <span class="skill-chip">Git / GitHub</span>
             <span class="skill-chip">Streamlit</span>
-            <span class="skill-chip">FAISS</span>
+            <span class="skill-chip">MongoDB</span>
+            <span class="skill-chip">Vector database</span>
             <span class="skill-chip">Model Deployment</span>
             <span class="skill-chip">Model Monitoring</span>
           </div>
@@ -2402,13 +2341,49 @@
 
   <!-- PROFILE PHOTO MODAL -->
   <div class="modal-bg" id="modal-profile">
-    <div class="modal-box" style="background: transparent; border: none; box-shadow: none; display: flex; align-items: center; justify-content: center; width: auto; max-width: 90vw;">
-      <button class="modal-close" onclick="closeModal('modal-profile')" style="top: -20px; right: -20px; background: var(--surface2); color: var(--text);">✕</button>
+    <div class="modal-box"
+      style="background: transparent; border: none; box-shadow: none; display: flex; align-items: center; justify-content: center; width: auto; max-width: 90vw;">
+      <button class="modal-close" onclick="closeModal('modal-profile')"
+        style="top: -20px; right: -20px; background: var(--surface2); color: var(--text);">✕</button>
       <img src="profile.jpg" style="max-width: 100%; max-height: 85vh; border-radius: 16px; object-fit: contain;">
     </div>
   </div>
 
   <!-- PROJECT MODALS -->
+  <div class="modal-bg" id="modal-exusai">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('modal-exusai')">✕</button>
+      <div
+        style="width:100%;height:200px;background:linear-gradient(135deg,#1a0030,#2d1b4e);display:flex;align-items:center;justify-content:center;font-size:80px;border-radius:14px 14px 0 0">
+        🧠</div>
+      <div class="modal-body">
+        <div class="modal-title">NexusAI</div>
+        <div class="modal-sub">// Multi-Agent System</div>
+        <div class="modal-desc">
+          <p>Architected a multi-agent assistant orchestrated with LangGraph on a FastAPI backend, defining agent
+            routing, tool integration, and decision logic to autonomously manage email, calendar, and knowledge-base
+            queries.</p>
+          <ul style="margin-left:20px; margin-top:10px; display:flex; flex-direction:column; gap:8px;">
+            <li>Integrated multiple external tools and APIs (Gmail, Google Calendar, web search, voice STT/TTS) into the
+              agent's toolset, and built a RAG knowledge base over Qdrant for grounded, semantic-search-based
+              generation.</li>
+            <li>Implemented a proactive background scheduler that evaluates incoming emails and triggers
+              human-in-the-loop notifications, plus a Pytest test suite and Docker-based MongoDB setup for reliable,
+              repeatable deployment.</li>
+          </ul>
+        </div>
+        <div class="modal-tags">
+          <span class="modal-tag">LangGraph</span>
+          <span class="modal-tag">FastAPI</span>
+          <span class="modal-tag">Multi-Agent</span>
+          <span class="modal-tag">Qdrant</span>
+          <span class="modal-tag">Docker</span>
+        </div>
+        <a href="https://github.com/MazenEmad14" target="_blank" class="modal-btn">View on GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+
   <div class="modal-bg" id="modal-hema">
     <div class="modal-box">
       <button class="modal-close" onclick="closeModal('modal-hema')">✕</button>
@@ -2416,26 +2391,55 @@
         style="width:100%;height:200px;background:linear-gradient(135deg,#1a0030,#001530);display:flex;align-items:center;justify-content:center;font-size:80px;border-radius:14px 14px 0 0">
         🩸</div>
       <div class="modal-body">
-        <div class="modal-title">Hematology AI Diagnostic Agent</div>
-        <div class="modal-sub">// Graduation Project · 2025–2026</div>
+        <div class="modal-title">Hamatology AI Diagnostic Agent</div>
+        <div class="modal-sub">// 2025 – 2026 | github.com/MazenEmad14/Grad_Agent</div>
         <div class="modal-desc">
-          Architected a clinical decision support system utilizing an agentic pipeline (LangGraph) to orchestrate 3
-          specialized models: a multi-modal fusion model analyzing blood smear microscopy images and OCR-parsed lab
-          reports, and 2 dedicated models for structured CBC data processing.
-          <br><br>
-          Deployed a robust RESTful API (FastAPI) for diagnostic endpoints, ensuring 100% uptime under API quota limits
-          and enabling structured clinical report generation with risk assessment.
+          <ul style="margin-left:20px; margin-top:10px; display:flex; flex-direction:column; gap:8px;">
+            <li>Orchestrated 3 specialized deep learning models (vision, OCR, structured data) through a LangGraph agent
+              state machine, defining task routing and decision logic to autonomously drive a clinical diagnostic
+              workflow end-to-end.</li>
+            <li>Implemented one of the pipeline's core agents as a multi-modal fusion architecture in PyTorch — an
+              EfficientNet-B0 CNN backbone (transfer learning) fused with a tabular head for structured lab data — to
+              automate blood-disorder detection, reducing manual analysis time by an estimated 70%.</li>
+            <li>Deployed a RESTful API (FastAPI) exposing the multi-agent pipeline for diagnostic inference and
+              automated report generation, achieving 100% uptime under production API constraints — demonstrating the
+              ability to take a multi-agent system from design to a deployed, end-to-end product.</li>
+          </ul>
         </div>
         <div class="modal-tags">
           <span class="modal-tag">LangGraph</span>
           <span class="modal-tag">FastAPI</span>
           <span class="modal-tag">Multi-Modal Fusion</span>
           <span class="modal-tag">OCR</span>
-          <span class="modal-tag">Agentic AI</span>
-          <span class="modal-tag">CBC Analysis</span>
-          <span class="modal-tag">Computer Vision</span>
+          <span class="modal-tag">PyTorch</span>
         </div>
-        <a href="https://github.com/MazenEmad14" target="_blank" class="modal-btn">View on GitHub ↗</a>
+        <a href="https://github.com/MazenEmad14/Grad_Agent" target="_blank" class="modal-btn">View on GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-bg" id="modal-whatsapp-rag">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('modal-whatsapp-rag')">✕</button>
+      <div
+        style="width:100%;height:200px;background:linear-gradient(135deg,#001a2c,#0d5c3a);display:flex;align-items:center;justify-content:center;font-size:80px;border-radius:14px 14px 0 0">
+        💬</div>
+      <div class="modal-body">
+        <div class="modal-title">WhatsApp RAG Bot</div>
+        <div class="modal-sub">// Integration & NLP</div>
+        <div class="modal-desc">
+          Intelligent WhatsApp integration with Retrieval-Augmented Generation. Processes chat history & documents in
+          real-time. Multi-language support with semantic search and context-aware responses.
+        </div>
+        <div class="modal-tags">
+          <span class="modal-tag">RAG</span>
+          <span class="modal-tag">WhatsApp API</span>
+          <span class="modal-tag">LangChain</span>
+          <span class="modal-tag">Vector DB</span>
+          <span class="modal-tag">NLP</span>
+        </div>
+        <a href="https://https://github.com/MazenEmad14/NexusAI-Secretary" target="_blank" class="modal-btn">View on
+          GitHub ↗</a>
       </div>
     </div>
   </div>
@@ -2464,9 +2468,33 @@
           <span class="modal-tag">RAG</span>
           <span class="modal-tag">HuggingFace</span>
           <span class="modal-tag">Streamlit</span>
-          <span class="modal-tag">Arabic/English</span>
         </div>
         <a href="https://github.com/MazenEmad14" target="_blank" class="modal-btn">View on GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-bg" id="modal-agriculture">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('modal-agriculture')">✕</button>
+      <div
+        style="width:100%;height:200px;background:linear-gradient(135deg,#0d3d1a,#1a2d0d);display:flex;align-items:center;justify-content:center;font-size:80px;border-radius:14px 14px 0 0">
+        🌾</div>
+      <div class="modal-body">
+        <div class="modal-title">Agriculture AI System</div>
+        <div class="modal-sub">// Smart Farming Solution</div>
+        <div class="modal-desc">
+          Smart farming solution with crop disease detection and yield prediction. Computer vision models identify plant
+          diseases with high accuracy. Data-driven recommendations for optimal agricultural practices.
+        </div>
+        <div class="modal-tags">
+          <span class="modal-tag">Computer Vision</span>
+          <span class="modal-tag">ML Models</span>
+          <span class="modal-tag">Image Classification</span>
+          <span class="modal-tag">Data Analysis</span>
+        </div>
+        <a href="https://github.com/MazenEmad14/Agriculture_project" target="_blank" class="modal-btn">View on GitHub
+          ↗</a>
       </div>
     </div>
   </div>
@@ -2521,8 +2549,6 @@
           <span class="modal-tag">Google Gemini</span>
           <span class="modal-tag">Whisper</span>
           <span class="modal-tag">Multi-Agent</span>
-          <span class="modal-tag">JSON Extraction</span>
-          <span class="modal-tag">Email Automation</span>
         </div>
         <a href="https://github.com/MazenEmad14/AI-Meeting-Assistant" target="_blank" class="modal-btn">View on GitHub
           ↗</a>
