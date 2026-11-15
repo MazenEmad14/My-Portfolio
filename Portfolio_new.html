@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mazen Emad - Elegant AI Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#fff7ed',  // Orange 50
+              100: '#ffedd5', // Orange 100
+              400: '#fb923c', // Orange 400
+              500: '#f97316', // Orange 500
+              600: '#ea580c', // Orange 600
+              900: '#7c2d12', // Orange 900
+            },
+            surface: {
+              light: '#ffffff',
+              dark: '#18181b', // Zinc 900
+            }
+          },
+          animation: {
+            'marquee': 'marquee 25s linear infinite',
+          },
+          keyframes: {
+            marquee: {
+              '0%': { transform: 'translateX(0%)' },
+              '100%': { transform: 'translateX(-100%)' },
+            }
+          }
+        },
+      },
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;700;900&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <style>
+    body {
+      background-color: #fafafa;
+      color: #18181b; /* Zinc 900 */
+      transition: background-color 0.3s ease, color 0.3s ease;
+      overflow-x: hidden;
+    }
+    html.dark body {
+      background-color: #09090b; /* Zinc 950 */
+      color: #f4f4f5; /* Zinc 100 */
+    }
+
+    /* Minimal Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 10px; }
+    html.dark ::-webkit-scrollbar-thumb { background: #3f3f46; }
+
+    /* Bento Box Styles */
+    .bento-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 1.5rem;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+    html.dark .bento-card {
+      background: rgba(24, 24, 27, 0.6); /* Zinc 900 with opacity */
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    }
+    .bento-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    html.dark .bento-card:hover {
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+      border-color: rgba(249, 115, 22, 0.3); /* Orange accent */
+    }
+
+    /* Floating blobs background */
+    .blob {
+      position: absolute;
+      filter: blur(80px);
+      z-index: -1;
+      opacity: 0.3;
+      border-radius: 50%;
+      animation: float 10s ease-in-out infinite;
+    }
+    html.dark .blob { opacity: 0.15; }
+    
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -50px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+    }
+
+    /* Modal Animation */
+    .modal-overlay {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .modal-content {
+      transform: translateY(100px) scale(0.95);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .modal-overlay.active .modal-content {
+      transform: translateY(0) scale(1);
+    }
+
+    /* Gradient Text */
+    .text-gradient {
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-image: linear-gradient(to right, #ea580c, #e11d48); /* Orange to Rose */
+    }
+    html.dark .text-gradient {
+      background-image: linear-gradient(to right, #fb923c, #fb7185); /* Lighter Orange to Lighter Rose */
+    }
+
+    /* Loader */
+    #elegant-loader {
+      position: fixed;
+      inset: 0;
+      background: #ffffff;
+      z-index: 999999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+    }
+    html.dark #elegant-loader { background: #09090b; }
+    #elegant-loader.hidden-loader { transform: translateY(-100%); }
+  </style>
+</head>
+<body class="antialiased font-sans relative">
+
+  <div id="elegant-loader">
+    <div class="overflow-hidden">
+      <h1 class="text-4xl md:text-6xl font-display font-bold text-zinc-900 dark:text-white translate-y-full animate-[slideUp_0.8s_ease_forwards]">Mazen.</h1>
+    </div>
+  </div>
+  <style>@keyframes slideUp { to { transform: translateY(0); } }</style>
+
+  <div class="blob bg-orange-200 w-96 h-96 top-0 left-[-10%]"></div>
+  <div class="blob bg-rose-200 w-[500px] h-[500px] top-[20%] right-[-10%] animation-delay-2000"></div>
+  <div class="blob bg-amber-200 w-80 h-80 bottom-0 left-[20%] animation-delay-4000"></div>
+
+  <nav class="fixed w-full top-0 z-50 transition-all duration-300 py-4 px-6">
+    <div class="max-w-6xl mx-auto bento-card rounded-full px-6 py-3 flex justify-between items-center bg-white/50 dark:bg-zinc-900/50">
+      <a href="#home" class="font-display font-bold text-xl tracking-tight">Mazen<span class="text-brand-500">.</span></a>
+      
+      <ul class="hidden md:flex space-x-8 text-sm font-medium text-zinc-600 dark:text-zinc-300">
+        <li><a href="#about" class="hover:text-brand-500 transition-colors">About</a></li>
+        <li><a href="#skills" class="hover:text-brand-500 transition-colors">Skills</a></li>
+        <li><a href="#projects" class="hover:text-brand-500 transition-colors">Projects</a></li>
+        <li><a href="#certificates" class="hover:text-brand-500 transition-colors">Certificates</a></li>
+      </ul>
+
+      <div class="flex items-center gap-4">
+        <a href="#contact" class="hidden md:inline-block px-5 py-2 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-medium hover:scale-105 transition-transform shadow-md">Get in touch</a>
+        <button id="theme-toggle" class="p-2 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors">
+          <svg id="theme-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <section id="home" class="min-h-screen flex items-center pt-24 pb-12 px-6">
+    <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div data-aos="fade-right" class="order-2 lg:order-1">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 text-sm font-medium mb-6">
+          <span class="relative flex h-3 w-3">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-brand-500"></span>
+          </span>
+          Available for new opportunities
+        </div>
+        <h1 class="font-display text-5xl md:text-7xl font-bold leading-tight mb-6 text-zinc-900 dark:text-white">
+          Hi, I'm Mazen Emad. <br>
+          <span class="text-gradient">AI Engineer & Data Scientist.</span>
+        </h1>
+        <p class="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 mb-8 max-w-lg leading-relaxed">
+          I don’t just use AI; I build it. Transforming raw data into actionable insights and creating intelligent, generative applications.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="#projects" class="px-8 py-4 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-medium hover:shadow-lg hover:-translate-y-1 transition-all">View Projects</a>
+          <a href="Mazen Emad Junior Data Scientist _ Machine Learning Engineer.pdf" target="_blank" class="px-8 py-4 rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 font-medium transition-all flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            Resume
+          </a>
+        </div>
+      </div>
+      <div data-aos="fade-left" class="order-1 lg:order-2 flex justify-center lg:justify-end">
+        <div class="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-3xl overflow-hidden bento-card p-2 transform rotate-3 hover:rotate-0 transition-transform duration-500 cursor-pointer" onclick="openImageModal('profile.jpg')">
+          <img src="profile.jpg" alt="Mazen Emad" class="w-full h-full object-cover rounded-2xl">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="py-20 px-6">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <div class="md:col-span-2 bento-card p-8 md:p-10" data-aos="fade-up">
+        <h2 class="font-display text-3xl font-bold mb-6 text-zinc-900 dark:text-white">About Me</h2>
+        <p class="text-zinc-700 dark:text-zinc-300 text-lg leading-relaxed font-medium">
+          My fascination with AI didn't start in a classroom—it started with a deep curiosity about the magic behind tools like ChatGPT. Today, as a final-year AI student at BFCAI, my core expertise lies at the intersection of Data Science and Generative AI. <br><br>
+          I have hands-on experience developing and fine-tuning GenAI models, handling the entire data lifecycle, and building interactive dashboards. I love the thrill of creating intelligent applications. Let's build something amazing together!
+        </p>
+      </div>
+
+      <div class="md:col-span-1 bento-card p-8 md:p-10 flex flex-col justify-between bg-gradient-to-br from-brand-50 to-white dark:from-zinc-800 dark:to-zinc-900" data-aos="fade-up" data-aos-delay="100">
+        <div>
+          <div class="w-12 h-12 bg-white dark:bg-zinc-700 rounded-2xl flex items-center justify-center shadow-sm mb-6">
+            <svg class="w-6 h-6 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 14l9-5-9-5-9 5 9 5z"></path><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>
+          </div>
+          <h3 class="font-display text-xl font-bold mb-2 text-zinc-900 dark:text-white">Education</h3>
+          <p class="text-zinc-800 dark:text-zinc-200 font-bold">Banha University</p>
+          <p class="text-zinc-600 dark:text-zinc-400 text-sm mt-1">Faculty of Computers & AI</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs rounded-full font-bold">Major: AI</span>
+            <span class="px-3 py-1 bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs rounded-full font-bold">Minor: Data Science</span>
+          </div>
+        </div>
+        <p class="font-display font-bold text-brand-600 dark:text-brand-400 mt-8 text-lg">2022 - 2026</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="skills" class="py-12 overflow-hidden bg-white/50 dark:bg-zinc-900/50 border-y border-zinc-200 dark:border-zinc-800">
+    <div class="relative flex overflow-x-hidden">
+      <div class="py-4 animate-marquee whitespace-nowrap flex items-center gap-8 px-4">
+        <script>
+          const skills = ["Python", "SQL", "Machine Learning", "Deep Learning", "NLP", "Computer Vision", "Generative AI", "LLMs", "Prompt Engineering", "TensorFlow", "PyTorch", "RAG & Fine Tuning", "Data Visualization", "MLOps"];
+          for(let i=0; i<3; i++) { 
+            skills.forEach(skill => {
+              document.write(`<span class="text-xl md:text-3xl font-display font-bold text-zinc-400 dark:text-zinc-600 hover:text-brand-500 dark:hover:text-brand-400 transition-colors cursor-default">${skill}</span><span class="text-brand-500 text-xl">•</span>`);
+            });
+          }
+        </script>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex justify-between items-end mb-12">
+        <h2 class="font-display text-4xl font-bold text-zinc-900 dark:text-white">Featured Projects</h2>
+        <p class="text-brand-600 dark:text-brand-400 font-bold hidden sm:block text-lg">30+ Total Projects Built</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[300px]">
+        
+        <div class="bento-card group cursor-pointer overflow-hidden md:col-span-2 lg:col-span-2 relative" onclick="openProjectModal('meeting')" data-aos="fade-up">
+          <img src="project6.jpg" alt="AI Meeting Assistant" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+          <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-900/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+          <div class="absolute inset-0 p-8 flex flex-col justify-end">
+            <span class="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-xs rounded-full font-bold w-max mb-3 border border-white/30">Multi-Agent AI</span>
+            <h3 class="font-display text-3xl font-bold text-white mb-2">AI Meeting Assistant</h3>
+            <p class="text-zinc-200 line-clamp-2 max-w-lg font-medium">CrewAI and Gemini powered system that transcribes audio, summarizes meetings, extracts tasks, and auto-sends emails.</p>
+          </div>
+        </div>
+
+        <div class="bento-card p-8 flex flex-col justify-center items-center text-center bg-gradient-to-br from-brand-500 to-rose-500 text-white" data-aos="fade-up" data-aos-delay="100">
+          <h3 class="font-display text-6xl font-bold mb-2">15+</h3>
+          <p class="font-bold text-white/90">Deep Learning Models</p>
+          <hr class="w-12 border-white/30 my-4">
+          <h3 class="font-display text-4xl font-bold mb-1">8+</h3>
+          <p class="text-sm font-bold text-white/90">GenAI Applications</p>
+        </div>
+
+        <div class="bento-card group cursor-pointer overflow-hidden relative" onclick="openProjectModal('attendance')" data-aos="fade-up">
+          <img src="project5.jpg" alt="Smart Attendance System" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+          <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 to-transparent opacity-80"></div>
+          <div class="absolute inset-0 p-6 flex flex-col justify-end text-white">
+            <h3 class="font-display text-2xl font-bold mb-2">Smart Attendance</h3>
+            <p class="text-sm font-medium text-zinc-300 line-clamp-2">Real-time facial recognition attendance system built with OpenCV and Streamlit.</p>
+          </div>
+        </div>
+
+        <div class="bento-card group cursor-pointer overflow-hidden relative" onclick="openProjectModal('weather')" data-aos="fade-up" data-aos-delay="100">
+          <img src="project4.jpg" alt="Weather Classification" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 mix-blend-multiply">
+          <div class="absolute inset-0 bg-zinc-900/20 group-hover:bg-transparent transition-colors"></div>
+          <div class="absolute inset-0 p-6 flex flex-col justify-end bg-gradient-to-t from-white dark:from-zinc-950 to-transparent">
+            <h3 class="font-display text-xl font-bold mb-2 text-zinc-900 dark:text-white">Weather Classification</h3>
+            <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300 line-clamp-2">Predicting rainfall based on weather conditions like temperature, humidity, and wind.</p>
+          </div>
+        </div>
+
+        <div class="bento-card group cursor-pointer overflow-hidden relative" onclick="openProjectModal('student')" data-aos="fade-up" data-aos-delay="200">
+           <div class="absolute inset-0 p-6 flex flex-col">
+            <div class="h-32 mb-4 rounded-xl overflow-hidden relative">
+              <img src="project2.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            </div>
+            <h3 class="font-display text-xl font-bold mb-2 text-zinc-900 dark:text-white">Student Performance</h3>
+            <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300 line-clamp-2">Estimating student exam scores based on study time, family support, and activities.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="certificates" class="py-20 px-6">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="font-display text-4xl font-bold mb-10 text-center text-zinc-900 dark:text-white" data-aos="fade-up">Certifications</h2>
+      
+      <div class="space-y-4">
+        <div class="bento-card p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between group cursor-pointer hover:bg-white dark:hover:bg-zinc-800" onclick="openCertModal('nvidia')" data-aos="fade-up">
+          <div class="flex items-center gap-4 mb-4 sm:mb-0">
+            <div class="w-12 h-12 rounded-full bg-brand-100 dark:bg-brand-900/30 text-brand-600 flex items-center justify-center font-bold">NV</div>
+            <div>
+              <h4 class="font-bold text-lg text-zinc-900 dark:text-white group-hover:text-brand-500 transition-colors">NVIDIA DLI: GenAI & LLM Applications</h4>
+              <p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">ITI & NVIDIA • Feb 2026</p>
+            </div>
+          </div>
+          <span class="text-sm font-bold px-4 py-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 rounded-full">Certified</span>
+        </div>
+
+        <div class="bento-card p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between group cursor-pointer hover:bg-white dark:hover:bg-zinc-800" onclick="openCertModal('depi')" data-aos="fade-up" data-aos-delay="50">
+          <div class="flex items-center gap-4 mb-4 sm:mb-0">
+            <div class="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-900/30 text-rose-600 flex items-center justify-center font-bold">DE</div>
+            <div>
+              <h4 class="font-bold text-lg text-zinc-900 dark:text-white group-hover:text-brand-500 transition-colors">Generative & Agentic AI</h4>
+              <p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">Digital Egypt Pioneers Initiative (DEPI)</p>
+            </div>
+          </div>
+          <span class="text-sm font-bold px-4 py-2 bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 rounded-full">In Progress</span>
+        </div>
+
+        <div class="bento-card p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between group cursor-pointer hover:bg-white dark:hover:bg-zinc-800" onclick="openCertModal('nlp_nti')" data-aos="fade-up" data-aos-delay="100">
+          <div class="flex items-center gap-4 mb-4 sm:mb-0">
+            <div class="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 flex items-center justify-center font-bold">NTI</div>
+            <div>
+              <h4 class="font-bold text-lg text-zinc-900 dark:text-white group-hover:text-brand-500 transition-colors">Natural Language Processing (NLP)</h4>
+              <p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">NTI & ITIDA Summer Training • Aug 2025</p>
+            </div>
+          </div>
+          <span class="text-sm font-bold px-4 py-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 rounded-full">Score: 85%</span>
+        </div>
+
+         <div class="bento-card p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between group cursor-pointer hover:bg-white dark:hover:bg-zinc-800" onclick="openCertModal('machine_nti')" data-aos="fade-up" data-aos-delay="150">
+          <div class="flex items-center gap-4 mb-4 sm:mb-0">
+            <div class="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 flex items-center justify-center font-bold">NTI</div>
+            <div>
+              <h4 class="font-bold text-lg text-zinc-900 dark:text-white group-hover:text-brand-500 transition-colors">Machine Learning for Data Analysis</h4>
+              <p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">NTI - Digital Egypt Youth • Jun 2025</p>
+            </div>
+          </div>
+          <span class="text-sm font-bold px-4 py-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 rounded-full">Score: 91%</span>
+        </div>
+
+        <div class="bento-card p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between group cursor-pointer hover:bg-white dark:hover:bg-zinc-800" onclick="openCertModal('iti')" data-aos="fade-up" data-aos-delay="200">
+          <div class="flex items-center gap-4 mb-4 sm:mb-0">
+            <div class="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 flex items-center justify-center font-bold">ITI</div>
+            <div>
+              <h4 class="font-bold text-lg text-zinc-900 dark:text-white group-hover:text-brand-500 transition-colors">Artificial Intelligence Fundamentals</h4>
+              <p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">Information Technology Institute • Aug 2024</p>
+            </div>
+          </div>
+          <span class="text-sm font-bold px-4 py-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 rounded-full">72 Hours</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="py-24 px-6 relative overflow-hidden">
+    <div class="max-w-4xl mx-auto bento-card p-12 text-center bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-xl" data-aos="zoom-in">
+      <h2 class="font-display text-5xl md:text-6xl font-bold mb-6">Let's Talk.</h2>
+      <p class="text-zinc-300 dark:text-zinc-600 text-lg font-medium mb-10 max-w-xl mx-auto">Interested in collaborating on an AI or Data Science project? I'm always open to discussing new opportunities.</p>
+      
+      <a href="mailto:Mazen7ektr@gmail.com" class="inline-block font-display text-2xl md:text-3xl font-bold border-b-2 border-brand-500 pb-1 hover:text-brand-400 dark:hover:text-brand-600 transition-colors mb-12">Mazen7ektr@gmail.com</a>
+      
+      <div class="flex justify-center gap-4 flex-wrap">
+        <a href="https://github.com/MazenEmad14" target="_blank" class="px-6 py-3 rounded-full bg-white/10 dark:bg-black/5 hover:bg-white/20 dark:hover:bg-black/10 transition-colors font-bold text-white dark:text-zinc-900">GitHub</a>
+        <a href="https://www.linkedin.com/in/mazen-emad14" target="_blank" class="px-6 py-3 rounded-full bg-white/10 dark:bg-black/5 hover:bg-white/20 dark:hover:bg-black/10 transition-colors font-bold text-white dark:text-zinc-900">LinkedIn</a>
+        <a href="https://wa.me/201011441742" target="_blank" class="px-6 py-3 rounded-full bg-brand-500 text-white hover:bg-brand-600 transition-colors font-bold">WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-8 text-center text-zinc-700 dark:text-zinc-300 font-bold text-sm">
+    <p>© 2026 Mazen Emad Abdelhalim. Minimalist Warm Edition.</p>
+  </footer>
+
+  <script>
+    const data = {
+      certs: {
+        iti: { title: "AI Fundamentals", provider: "ITI", date: "Aug 2024", score: "72 Hours", desc: "Intensive training covering: Introduction to AI, Math for ML, Data Preparation, and Deep Learning.", file: "ITI.jpg", imgPreview: "ITI.jpg" },
+        machine_nti: { title: "Machine Learning for Data Analysis", provider: "NTI - Digital Egypt Youth", date: "Apr 2025 - Jun 2025", score: "91% | 120 Hrs", desc: "Digital Egypt Youth Program covering ML techniques, Technical Hours (90 hrs) and Freelancing Coaching (30 hrs).", file: "Machine_NTI.pdf", imgPreview: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop" },
+        nlp_nti: { title: "Natural Language Processing", provider: "NTI & ITIDA", date: "Aug 2025", score: "85% | 120 Hrs", desc: "NLP algorithms, text processing, and generative AI foundations.", file: "NLP_NTI.pdf", imgPreview: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=800&auto=format&fit=crop" },
+        depi: { title: "Generative & Agentic AI", provider: "DEPI", date: "Present", score: "In Progress", desc: "Intensive training on Transformers, LLMs, RAG, and building autonomous Multi-Agent systems.", file: "#", imgPreview: "WhatsApp Image 2026-03-02 at 5.36.39 AM (1).jpeg" },
+        nvidia: { title: "NVIDIA DLI: GenAI Applications", provider: "ITI & NVIDIA", date: "Feb 2026", score: "Certified", desc: "Specialized training in building LLM applications, Prompt Engineering, and RAG.", file: "#", imgPreview: "image_511e7f.png" }
+      },
+      projects: {
+        student: { title: "Student Performance", desc: "A robust predictive machine learning model designed to estimate student exam scores based on various factors including study time, family support, and extracurricular activities.", img: "project2.jpg", link: "https://github.com/MazenEmad14/Student-Performance" },
+        weather: { title: "Weather Classification", desc: "A comprehensive classification model predicting rainfall based on Australian weather conditions like temperature, humidity, and wind speed. Features handling of imbalanced datasets.", img: "project4.jpg", link: "https://github.com/MazenEmad14/weatherAUS" },
+        attendance: { title: "Smart Attendance System", desc: "A modern, real-time facial recognition attendance system. Built with Python, OpenCV, and Streamlit, it features a dual portal for Admin and Students, live analytics, shift management.", img: "project5.jpg", link: "https://github.com/MazenEmad14/Smart-Attendance-System" },
+        meeting: { title: "AI Meeting Assistant", desc: "An advanced Multi-Agent system powered by CrewAI and Google Gemini. It takes meeting audio, transcribes it using Whisper, and utilizes specialized AI agents to generate summaries, extract action items, and send emails.", img: "project6.jpg", link: "https://github.com/MazenEmad14/AI-Meeting-Assistant" }
+      }
+    };
+
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+    function openCertModal(key) {
+      const d = data.certs[key];
+      document.getElementById('m-title').textContent = d.title;
+      document.getElementById('m-provider').textContent = d.provider;
+      document.getElementById('m-desc').textContent = d.desc;
+      document.getElementById('m-img').src = d.imgPreview;
+      document.getElementById('m-link').href = d.file;
+      openModal('generic-modal');
+    }
+
+    function openProjectModal(key) {
+      const d = data.projects[key];
+      document.getElementById('m-title').textContent = d.title;
+      document.getElementById('m-provider').textContent = "GitHub Project";
+      document.getElementById('m-desc').textContent = d.desc;
+      document.getElementById('m-img').src = d.img;
+      document.getElementById('m-link').href = d.link;
+      document.getElementById('m-link').textContent = "View Repository";
+      openModal('generic-modal');
+    }
+
+    function openImageModal(src) {
+        const modal = document.getElementById('image-modal');
+        document.getElementById('modal-zoom-img').src = src;
+        openModal('image-modal');
+    }
+  </script>
+
+  <div id="generic-modal" class="modal-overlay fixed inset-0 z-[100] flex justify-center items-center p-4 bg-zinc-900/50 backdrop-blur-sm">
+    <div class="absolute inset-0 cursor-pointer" onclick="closeModal('generic-modal')"></div>
+    <div class="modal-content relative w-full max-w-3xl bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row z-10 border border-zinc-200 dark:border-zinc-800">
+      <div class="w-full md:w-1/2 p-8 flex flex-col justify-center">
+        <h2 id="m-title" class="font-display text-2xl font-bold mb-2 text-zinc-900 dark:text-white">Title</h2>
+        <p id="m-provider" class="text-brand-600 dark:text-brand-400 font-bold mb-6 text-sm uppercase tracking-wide">Provider</p>
+        <p id="m-desc" class="text-zinc-700 dark:text-zinc-300 mb-8 font-medium leading-relaxed">Description goes here.</p>
+        <a id="m-link" href="#" target="_blank" class="inline-block text-center px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold rounded-full hover:shadow-lg transition-shadow">Open Link</a>
+      </div>
+      <div class="w-full md:w-1/2 bg-zinc-100 dark:bg-zinc-800 min-h-[250px] p-4 flex items-center justify-center">
+        <img id="m-img" src="" class="max-w-full max-h-64 object-contain rounded-xl shadow-md" alt="Preview">
+      </div>
+      <button onclick="closeModal('generic-modal')" class="absolute top-4 right-4 text-zinc-400 hover:text-zinc-900 dark:hover:text-white bg-zinc-100 dark:bg-zinc-800 rounded-full p-2 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="image-modal" class="modal-overlay fixed inset-0 z-[100] flex justify-center items-center bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md">
+    <div class="absolute inset-0 cursor-pointer" onclick="closeModal('image-modal')"></div>
+    <img id="modal-zoom-img" src="" class="modal-content max-w-[90vw] max-h-[90vh] object-contain rounded-2xl shadow-2xl z-10 relative pointer-events-none" alt="Zoomed">
+    <button onclick="closeModal('image-modal')" class="absolute top-6 right-6 z-20 text-zinc-500 hover:text-zinc-900 dark:hover:text-white bg-zinc-100 dark:bg-zinc-800 rounded-full p-3 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+  </div>
+
+  <script>
+    // Remove loader
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('elegant-loader').classList.add('hidden-loader');
+      }, 1000);
+    });
+
+    // Theme Toggle
+    const themeBtn = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Set default to light (or check local storage)
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        html.classList.add('dark');
+    } else {
+        html.classList.remove('dark');
+    }
+
+    themeBtn.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      if (html.classList.contains('dark')) {
+        localStorage.setItem('theme', 'dark');
+      } else {
+        localStorage.setItem('theme', 'light');
+      }
+    });
+
+    // Close Modals on Escape
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') {
+        closeModal('generic-modal');
+        closeModal('image-modal');
+      }
+    });
+
+    // Init AOS
+    AOS.init({ duration: 800, once: true, offset: 50 });
+  </script>
+</body>
+</html>
