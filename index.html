@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Inter:wght@300;400;500;600&display=swap"
     rel="stylesheet">
   <script>
     // Apply saved theme before paint (no flash)
@@ -53,7 +53,10 @@
       --grid: rgba(139, 92, 246, .035);
       --shadow: 0 20px 50px rgba(0, 0, 0, .35);
 
-      --font-display: 'Space Grotesk', system-ui, sans-serif;
+      --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+      --spot: rgba(139, 92, 246, .11);
+      --aurora-o: 1;
+      --grain-o: .045;
       --font-body: 'Inter', system-ui, sans-serif;
 
       --r-sm: 8px;
@@ -83,6 +86,9 @@
       --nav-bg: rgba(246, 247, 252, .82);
       --grid: rgba(109, 40, 217, .045);
       --shadow: 0 20px 50px rgba(30, 30, 80, .12);
+      --spot: rgba(109, 40, 217, .07);
+      --aurora-o: .55;
+      --grain-o: .035;
     }
 
     /* =========================================================
@@ -168,7 +174,7 @@
       inset: 0;
       z-index: 0;
       pointer-events: none;
-      opacity: .55;
+      opacity: .32;
     }
 
     main,
@@ -1870,6 +1876,219 @@
     }
 
     /* =========================================================
+       AURORA THEME EFFECTS
+    ========================================================= */
+    /* Drifting aurora: blur is rasterized once, only transform animates */
+    .aurora {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: var(--aurora-o);
+      transition: opacity .6s ease;
+    }
+
+    .aurora span {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      will-change: transform;
+      animation: drift 30s ease-in-out infinite alternate;
+    }
+
+    .aurora .a1 {
+      width: 48vw;
+      height: 48vw;
+      left: -12vw;
+      top: -16vw;
+      background: var(--accent);
+      opacity: .32;
+    }
+
+    .aurora .a2 {
+      width: 40vw;
+      height: 40vw;
+      right: -10vw;
+      top: 18vh;
+      background: var(--accent-2);
+      opacity: .2;
+      animation-duration: 36s;
+      animation-delay: -9s;
+    }
+
+    .aurora .a3 {
+      width: 36vw;
+      height: 36vw;
+      left: 28vw;
+      bottom: -20vw;
+      background: var(--accent-3);
+      opacity: .13;
+      animation-duration: 42s;
+      animation-delay: -18s;
+    }
+
+    @keyframes drift {
+      0% {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate3d(7vw, 5vh, 0) scale(1.1);
+      }
+
+      100% {
+        transform: translate3d(-5vw, 9vh, 0) scale(.94);
+      }
+    }
+
+    @media (max-width: 760px) {
+      .aurora span {
+        filter: blur(60px);
+      }
+
+      .aurora .a1 {
+        width: 90vw;
+        height: 90vw;
+      }
+
+      .aurora .a2 {
+        width: 70vw;
+        height: 70vw;
+      }
+
+      .aurora .a3 {
+        width: 70vw;
+        height: 70vw;
+      }
+    }
+
+    /* Film grain for depth */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: var(--grain-o);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Scroll progress */
+    .progress {
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      width: 100%;
+      height: 2px;
+      transform: scaleX(0);
+      transform-origin: left;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+      will-change: transform;
+    }
+
+    /* Cursor spotlight (pointer devices only, added by JS) */
+    .spot {
+      background-image: radial-gradient(460px circle at var(--mx, -600px) var(--my, -600px), var(--spot), transparent 45%);
+    }
+
+    /* Travelling light around flagship cards */
+    @property --angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
+    }
+
+    .flagship {
+      position: relative;
+    }
+
+    .flagship::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      border-radius: inherit;
+      padding: 1.5px;
+      pointer-events: none;
+      background: conic-gradient(from var(--angle), transparent 0 62%, var(--accent) 78%, var(--accent-2) 88%, transparent 100%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity .8s ease;
+      animation: spin 7s linear infinite paused;
+    }
+
+    .flagship.live::before {
+      opacity: 1;
+      animation-play-state: running;
+    }
+
+    @keyframes spin {
+      to {
+        --angle: 360deg;
+      }
+    }
+
+    /* Data-flow highlight in architecture diagrams */
+    .node {
+      transition: border-color .45s ease, box-shadow .45s ease, color .45s ease;
+    }
+
+    .node.lit {
+      border-color: var(--accent-2);
+      color: var(--text);
+      box-shadow: 0 0 0 3px var(--accent-2-soft), 0 0 24px var(--accent-2-soft);
+    }
+
+    .node.tool.lit {
+      border-color: var(--accent-2);
+    }
+
+    .node.core.lit {
+      box-shadow: 0 10px 34px var(--glow), 0 0 0 4px var(--accent-soft);
+    }
+
+    .node.out.lit {
+      border-color: var(--accent-3);
+      box-shadow: 0 0 0 3px var(--accent-3-soft), 0 0 24px var(--accent-3-soft);
+    }
+
+    /* Hero: word-by-word headline, photo eases in */
+    .hero-title .w {
+      display: inline-block;
+    }
+
+    html.js .hero-title .w {
+      opacity: 0;
+      transform: translateY(.45em);
+      transition: opacity .7s var(--ease), transform .7s var(--ease);
+    }
+
+    html.js .hero-title.in .w {
+      opacity: 1;
+      transform: none;
+    }
+
+    html.js .hero-photo.reveal {
+      transform: translateY(24px) scale(.95);
+    }
+
+    /* Theme switch: circular reveal (View Transitions API) */
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation: none;
+      mix-blend-mode: normal;
+    }
+
+    html.vt *,
+    html.vt *::before,
+    html.vt *::after {
+      transition: none !important;
+    }
+
+    /* =========================================================
        REVEAL
     ========================================================= */
     html.js .reveal {
@@ -1899,9 +2118,14 @@
         transition: none !important;
       }
 
-      html.js .reveal {
+      html.js .reveal,
+      html.js .hero-title .w {
         opacity: 1;
         transform: none;
+      }
+
+      .flagship::before {
+        display: none;
       }
     }
   </style>
@@ -1909,6 +2133,7 @@
 
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  <div class="aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
   <canvas id="bg-canvas" aria-hidden="true"></canvas>
 
   <!-- SVG icon sprite -->
@@ -1956,6 +2181,7 @@
 
   <!-- ================= NAV ================= -->
   <header class="nav" id="nav">
+    <div class="progress" id="progress" aria-hidden="true"></div>
     <div class="container nav-inner">
       <a href="#top" class="logo" aria-label="Mazen Emad — home">
         <span class="logo-mark">ME</span>
@@ -2007,7 +2233,7 @@
             <div class="status-pill reveal"><span class="dot"></span>Open to AI Engineer roles · Full-time &amp; freelance
             </div>
             <p class="hero-name reveal">Hi, I'm Mazen Emad 👋</p>
-            <h1 class="hero-title reveal">AI Engineer building <span class="grad">agentic systems</span> &amp; RAG apps
+            <h1 class="hero-title" id="hero-title">AI Engineer building <span class="grad">agentic systems</span> &amp; RAG apps
               — from prototype to production.</h1>
             <p class="hero-sub reveal">Currently <strong>AI Engineer &amp; Backend Developer at ADS Tek</strong>. I design
               LLM agents and retrieval pipelines, train the models behind them, and ship them as APIs with
@@ -2810,18 +3036,103 @@
 
       /* ---------- Theme ---------- */
       const themeBtn = document.getElementById('theme-toggle');
-      themeBtn.addEventListener('click', () => {
+      const applyTheme = () => {
         const light = root.classList.toggle('light');
         try { localStorage.setItem('theme', light ? 'light' : 'dark'); } catch (e) { }
         document.querySelector('meta[name="theme-color"]').content = light ? '#f6f7fc' : '#070816';
         if (window.__bgRecolor) window.__bgRecolor();
+      };
+      themeBtn.addEventListener('click', () => {
+        if (!document.startViewTransition || reduceMotion) { applyTheme(); return; }
+        const r = themeBtn.getBoundingClientRect();
+        const x = r.left + r.width / 2, y = r.top + r.height / 2;
+        const end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+        root.classList.add('vt');
+        const t = document.startViewTransition(applyTheme);
+        t.ready.then(() => {
+          root.animate(
+            { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${end}px at ${x}px ${y}px)`] },
+            { duration: 600, easing: 'cubic-bezier(.22,1,.36,1)', pseudoElement: '::view-transition-new(root)' }
+          );
+        }).catch(() => { });
+        t.finished.finally(() => root.classList.remove('vt'));
       });
 
       /* ---------- Nav: scrolled state, mobile menu, active link ---------- */
       const nav = document.getElementById('nav');
-      const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 10);
+      const bar = document.getElementById('progress');
+      let ticking = false;
+      const onScroll = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          nav.classList.toggle('scrolled', window.scrollY > 10);
+          const max = document.documentElement.scrollHeight - innerHeight;
+          bar.style.transform = `scaleX(${max > 0 ? Math.min(scrollY / max, 1) : 0})`;
+          ticking = false;
+        });
+      };
       onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
+
+      /* ---------- Hero headline: word-by-word ---------- */
+      const title = document.getElementById('hero-title');
+      let wi = 0;
+      const wrapWords = (text, cls) => {
+        const frag = document.createDocumentFragment();
+        text.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); return; }
+          const s = document.createElement('span');
+          s.className = 'w' + (cls ? ' ' + cls : '');
+          s.textContent = part;
+          s.style.transitionDelay = (0.15 + wi++ * 0.05) + 's';
+          frag.appendChild(s);
+        });
+        return frag;
+      };
+      [...title.childNodes].forEach(node => {
+        if (node.nodeType === 3) title.replaceChild(wrapWords(node.textContent), node);
+        else if (node.classList && node.classList.contains('grad')) title.replaceChild(wrapWords(node.textContent, 'grad'), node);
+      });
+      requestAnimationFrame(() => requestAnimationFrame(() => title.classList.add('in')));
+
+      /* ---------- Cursor spotlight (mouse/trackpad only) ---------- */
+      if (!reduceMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        document.querySelectorAll('.card:not(.card-more), .job, .skill-card, .cert, .pillar, .flagship-body').forEach(el => {
+          el.classList.add('spot');
+          el.addEventListener('pointermove', e => {
+            const r = el.getBoundingClientRect();
+            el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+            el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+          });
+          el.addEventListener('pointerleave', () => {
+            el.style.removeProperty('--mx');
+            el.style.removeProperty('--my');
+          });
+        });
+      }
+
+      /* ---------- Flagships: border light + data-flow, only while visible ---------- */
+      document.querySelectorAll('.flagship').forEach(card => {
+        const panel = card.querySelector('.flow-panel');
+        const steps = [...panel.children].filter(c => !c.matches('.flow-caption, .flow-link'));
+        let i = 0, timer = null;
+        const clear = () => panel.querySelectorAll('.lit').forEach(n => n.classList.remove('lit'));
+        const tick = () => {
+          clear();
+          const s = steps[i];
+          (s.classList.contains('node') ? [s] : s.querySelectorAll('.node')).forEach(n => n.classList.add('lit'));
+          i = (i + 1) % steps.length;
+          timer = setTimeout(tick, i === 0 ? 1600 : 700);
+        };
+        new IntersectionObserver(([en]) => {
+          card.classList.toggle('live', en.isIntersecting);
+          if (reduceMotion) return;
+          if (en.isIntersecting && !timer) { i = 0; tick(); }
+          else if (!en.isIntersecting && timer) { clearTimeout(timer); timer = null; clear(); }
+        }, { threshold: .3 }).observe(card);
+      });
 
       const menuBtn = document.getElementById('menu-btn');
       const links = document.getElementById('nav-links');
